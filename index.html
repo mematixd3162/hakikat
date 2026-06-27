@@ -6,15 +6,14 @@
     <title>Kurlar Menüsü</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter (Temiz ve okunaklı font) -->
+    <!-- Google Fonts - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome (Yönlendirme okları ve tema simgeleri için) -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
-        // Tailwind Yapılandırması
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -26,7 +25,7 @@
             }
         }
 
-        // Sayfa yüklendiğinde hafızadaki temayı uygulama (varsayılan: açık tema)
+        // Sayfa yüklendiğinde hafızadaki temayı uygulama
         document.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme') || 'light';
             if (savedTheme === 'dark') {
@@ -56,90 +55,101 @@
             updateThemeIcon(newTheme);
         }
 
-        // Tema butonundaki simgeyi güncelleme
+        // Tema buton simgesi
         function updateThemeIcon(theme) {
             const icon = document.getElementById('theme-icon');
             if (icon) {
                 if (theme === 'dark') {
-                    icon.className = 'fa-solid fa-sun text-amber-400 text-lg';
+                    icon.className = 'fa-solid fa-sun text-teal-400 text-lg';
                 } else {
-                    icon.className = 'fa-solid fa-moon text-slate-600 text-lg';
+                    icon.className = 'fa-solid fa-moon text-sky-600 text-lg';
                 }
             }
         }
     </script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200 flex flex-col items-center justify-start md:justify-center p-4 sm:p-6 md:p-8">
+<!-- Tüm alanı kaplayan %50 Açık Mavi, %25 Beyaz ve %25 Turkuaz akıcı gradyan arka planı -->
+<body class="bg-gradient-to-tr from-sky-200/70 via-white to-teal-200/60 dark:from-sky-950 dark:via-slate-950 dark:to-teal-950/70 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-500 flex flex-col items-center justify-start md:justify-center p-4 sm:p-6 md:p-8">
 
-    <!-- Sağ Üst Köşe Tema Değiştirme Butonu (Orta Boyutta) -->
-    <div class="w-full max-w-md flex justify-end mb-4 md:fixed md:top-4 md:right-4 md:mb-0">
+    <!-- Sağ Üst Köşe Tema Butonu (Arka planla bütünleşik cam tasarımı) -->
+    <div class="w-full max-w-md flex justify-end mb-4 md:fixed md:top-4 md:right-4 md:mb-0 z-50">
         <button onclick="toggleTheme()" 
-                class="flex items-center justify-center w-11 h-11 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200/80 dark:border-slate-700/80 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-all duration-150 active:scale-95"
+                class="flex items-center justify-center w-11 h-11 bg-white/30 dark:bg-slate-900/30 backdrop-blur-md rounded-xl shadow-lg border border-white/50 dark:border-slate-800/50 hover:bg-white/50 dark:hover:bg-slate-800/50 transition-all duration-150 active:scale-95"
                 title="Temayı Değiştir"
                 aria-label="Temayı Değiştir">
-            <i id="theme-icon" class="fa-solid fa-moon text-slate-600 text-lg"></i>
+            <i id="theme-icon" class="fa-solid fa-moon text-sky-600 text-lg"></i>
         </button>
     </div>
 
-    <!-- Menü Kartı (Tamamen Mobil Uyumlu ve Akıcı Genişlikte) -->
-    <div class="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700/80 p-5 sm:p-6 md:p-8 transition-colors duration-200">
+    <!-- Menü Kartı (Bütünleşik "Buzlu Cam" tasarımı - Keskin bir ayırma olmadan arka plan renklerini içine alır) -->
+    <div class="w-full max-w-md bg-white/30 dark:bg-slate-900/30 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/60 dark:border-slate-800/60 p-6 sm:p-8 transition-colors duration-500">
         
-        <!-- Başlık -->
-        <h1 class="text-xl sm:text-2xl font-bold text-center text-slate-900 dark:text-white mb-5 sm:mb-6 tracking-tight">
+        <!-- Başlık (Turkuaz ve Açık Mavi yumuşak geçiş) -->
+        <h1 class="text-2xl sm:text-3xl font-bold text-center bg-gradient-to-r from-teal-600 via-sky-600 to-teal-600 dark:from-teal-400 dark:via-sky-400 dark:to-teal-400 bg-clip-text text-transparent mb-6 tracking-tight">
             Kurlar
         </h1>
 
-        <!-- Kur Listesi (Dokunmatik ekranlara uygun tıklama alanları) -->
-        <div class="space-y-2">
+        <!-- Kur Listesi (Tümüyle bütünleşik, yarı şeffaf butonlar) -->
+        <div class="space-y-2.5">
             
-            <a href="kur1.html" class="flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/80 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 rounded-xl border border-slate-100/80 dark:border-slate-800 transition-all duration-150 group active:scale-[0.99] touch-manipulation">
-                <span class="font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">1. Kur</span>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            <!-- 1. Kur -->
+            <a href="kur1.html" class="flex items-center justify-between p-4 bg-white/40 hover:bg-white/70 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-white/50 dark:border-slate-800/40 transition-all duration-200 group active:scale-[0.99] touch-manipulation">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">1. Kur</span>
+                <i class="fa-solid fa-chevron-right text-xs text-teal-500/70 group-hover:text-teal-600 group-hover:translate-x-1 transition-all"></i>
             </a>
 
-            <a href="kur2.html" class="flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/80 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 rounded-xl border border-slate-100/80 dark:border-slate-800 transition-all duration-150 group active:scale-[0.99] touch-manipulation">
-                <span class="font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">2. Kur</span>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            <!-- 2. Kur -->
+            <a href="kur2.html" class="flex items-center justify-between p-4 bg-white/40 hover:bg-white/70 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-white/50 dark:border-slate-800/40 transition-all duration-200 group active:scale-[0.99] touch-manipulation">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">2. Kur</span>
+                <i class="fa-solid fa-chevron-right text-xs text-teal-500/70 group-hover:text-teal-600 group-hover:translate-x-1 transition-all"></i>
             </a>
 
-            <a href="kur3.html" class="flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/80 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 rounded-xl border border-slate-100/80 dark:border-slate-800 transition-all duration-150 group active:scale-[0.99] touch-manipulation">
-                <span class="font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">3. Kur</span>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            <!-- 3. Kur -->
+            <a href="kur3.html" class="flex items-center justify-between p-4 bg-white/40 hover:bg-white/70 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-white/50 dark:border-slate-800/40 transition-all duration-200 group active:scale-[0.99] touch-manipulation">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">3. Kur</span>
+                <i class="fa-solid fa-chevron-right text-xs text-teal-500/70 group-hover:text-teal-600 group-hover:translate-x-1 transition-all"></i>
             </a>
 
-            <a href="kur4.html" class="flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/80 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 rounded-xl border border-slate-100/80 dark:border-slate-800 transition-all duration-150 group active:scale-[0.99] touch-manipulation">
-                <span class="font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">4. Kur</span>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            <!-- 4. Kur -->
+            <a href="kur4.html" class="flex items-center justify-between p-4 bg-white/40 hover:bg-white/70 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-white/50 dark:border-slate-800/40 transition-all duration-200 group active:scale-[0.99] touch-manipulation">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">4. Kur</span>
+                <i class="fa-solid fa-chevron-right text-xs text-teal-500/70 group-hover:text-teal-600 group-hover:translate-x-1 transition-all"></i>
             </a>
 
-            <a href="kur5.html" class="flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/80 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 rounded-xl border border-slate-100/80 dark:border-slate-800 transition-all duration-150 group active:scale-[0.99] touch-manipulation">
-                <span class="font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">5. Kur</span>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            <!-- 5. Kur -->
+            <a href="kur5.html" class="flex items-center justify-between p-4 bg-white/40 hover:bg-white/70 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-white/50 dark:border-slate-800/40 transition-all duration-200 group active:scale-[0.99] touch-manipulation">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">5. Kur</span>
+                <i class="fa-solid fa-chevron-right text-xs text-teal-500/70 group-hover:text-teal-600 group-hover:translate-x-1 transition-all"></i>
             </a>
 
-            <a href="kur6.html" class="flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/80 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 rounded-xl border border-slate-100/80 dark:border-slate-800 transition-all duration-150 group active:scale-[0.99] touch-manipulation">
-                <span class="font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">6. Kur</span>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            <!-- 6. Kur -->
+            <a href="kur6.html" class="flex items-center justify-between p-4 bg-white/40 hover:bg-white/70 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-white/50 dark:border-slate-800/40 transition-all duration-200 group active:scale-[0.99] touch-manipulation">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">6. Kur</span>
+                <i class="fa-solid fa-chevron-right text-xs text-teal-500/70 group-hover:text-teal-600 group-hover:translate-x-1 transition-all"></i>
             </a>
 
-            <a href="kur7.html" class="flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/80 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 rounded-xl border border-slate-100/80 dark:border-slate-800 transition-all duration-150 group active:scale-[0.99] touch-manipulation">
-                <span class="font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">7. Kur</span>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            <!-- 7. Kur -->
+            <a href="kur7.html" class="flex items-center justify-between p-4 bg-white/40 hover:bg-white/70 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-white/50 dark:border-slate-800/40 transition-all duration-200 group active:scale-[0.99] touch-manipulation">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">7. Kur</span>
+                <i class="fa-solid fa-chevron-right text-xs text-teal-500/70 group-hover:text-teal-600 group-hover:translate-x-1 transition-all"></i>
             </a>
 
-            <a href="kur8.html" class="flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/80 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 rounded-xl border border-slate-100/80 dark:border-slate-800 transition-all duration-150 group active:scale-[0.99] touch-manipulation">
-                <span class="font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">8. Kur</span>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            <!-- 8. Kur -->
+            <a href="kur8.html" class="flex items-center justify-between p-4 bg-white/40 hover:bg-white/70 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-white/50 dark:border-slate-800/40 transition-all duration-200 group active:scale-[0.99] touch-manipulation">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">8. Kur</span>
+                <i class="fa-solid fa-chevron-right text-xs text-teal-500/70 group-hover:text-teal-600 group-hover:translate-x-1 transition-all"></i>
             </a>
 
-            <a href="kur9.html" class="flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/80 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 rounded-xl border border-slate-100/80 dark:border-slate-800 transition-all duration-150 group active:scale-[0.99] touch-manipulation">
-                <span class="font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">9. Kur</span>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            <!-- 9. Kur -->
+            <a href="kur9.html" class="flex items-center justify-between p-4 bg-white/40 hover:bg-white/70 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-white/50 dark:border-slate-800/40 transition-all duration-200 group active:scale-[0.99] touch-manipulation">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">9. Kur</span>
+                <i class="fa-solid fa-chevron-right text-xs text-teal-500/70 group-hover:text-teal-600 group-hover:translate-x-1 transition-all"></i>
             </a>
 
-            <a href="kur10.html" class="flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/80 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 rounded-xl border border-slate-100/80 dark:border-slate-800 transition-all duration-150 group active:scale-[0.99] touch-manipulation">
-                <span class="font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">10. Kur</span>
-                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            <!-- 10. Kur -->
+            <a href="kur10.html" class="flex items-center justify-between p-4 bg-white/40 hover:bg-white/70 dark:bg-slate-900/40 dark:hover:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-white/50 dark:border-slate-800/40 transition-all duration-200 group active:scale-[0.99] touch-manipulation">
+                <span class="font-semibold text-slate-700 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">10. Kur</span>
+                <i class="fa-solid fa-chevron-right text-xs text-teal-500/70 group-hover:text-teal-600 group-hover:translate-x-1 transition-all"></i>
             </a>
 
         </div>
