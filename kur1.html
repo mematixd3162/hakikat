@@ -6,12 +6,6 @@
     <title>1. Kur Görev Takip Sistemi</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tailwind CSS Dark Mode Activation Configuration -->
-    <script>
-        tailwind.config = {
-            darkMode: 'class'
-        }
-    </script>
     <!-- Google Fonts (Plus Jakarta Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,23 +26,17 @@
         ::-webkit-scrollbar-track {
             background: #f1f5f9;
         }
-        .dark ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
         ::-webkit-scrollbar-thumb {
             background: #bae6fd;
             border-radius: 9999px;
         }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #334155;
-        }
     </style>
 </head>
-<body class="bg-sky-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen pb-16 transition-colors duration-300">
+<body class="bg-sky-100 text-slate-800 min-h-screen pb-16 transition-colors duration-300">
 
-    <!-- Floating Light/Dark Mode Toggle Button (Mid-Size in Upper Right Corner) -->
-    <div class="fixed top-4 right-4 z-50">
-        <button onclick="toggleTheme()" id="theme-toggle-btn" class="w-10 h-10 rounded-xl border border-sky-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-teal-600 dark:text-slate-300 hover:bg-sky-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center shadow-md active:scale-95" aria-label="Tema Değiştir">
+    <!-- Floating Back/Theme Toggle Space -->
+    <div class="fixed top-4 right-4 z-50 flex gap-2">
+        <button onclick="toggleTheme()" id="theme-toggle-btn" class="w-10 h-10 rounded-xl border border-sky-200 bg-white text-teal-600 hover:bg-sky-50 transition-all flex items-center justify-center shadow-md active:scale-95" aria-label="Tema Değiştir">
             <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
         </button>
     </div>
@@ -56,18 +44,18 @@
     <!-- STUDENT SELECTION & CREATION SCREEN -->
     <div id="student-view" class="max-w-md mx-auto px-4 py-12 md:py-20">
         <div class="text-center mb-8">
-            <h1 class="text-2xl font-bold tracking-tight text-teal-900 dark:text-slate-100">1. Kur Öğrenci Girişi</h1>
+            <h1 class="text-2xl font-bold tracking-tight text-teal-900">1. Kur Öğrenci Girişi</h1>
         </div>
 
-        <!-- Add Student Card (25% White Area in 50-25-25 Split) -->
-        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-sky-100 dark:border-slate-800 p-5 mb-8 shadow-sm">
+        <!-- Add Student Card -->
+        <div class="bg-white rounded-2xl border border-sky-100 p-5 mb-8 shadow-sm">
             <div class="flex flex-col gap-3">
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                         <i class="fa-solid fa-user"></i>
                     </span>
                     <input type="text" id="new-student-name" placeholder="Öğrenci Adı" 
-                        class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-10 pr-4 text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:bg-white dark:focus:bg-slate-900 transition-all text-sm">
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:bg-white transition-all text-sm">
                 </div>
                 <button onclick="createNewStudent()" class="w-full bg-teal-600 hover:bg-teal-500 text-white font-semibold py-3 px-4 rounded-xl transition-all active:scale-95 text-sm flex items-center justify-center gap-2 shadow-sm">
                     <i class="fa-solid fa-plus"></i> Öğrenci Ekle
@@ -77,72 +65,88 @@
 
         <!-- Student List -->
         <div>
-            <h2 class="text-xs font-bold text-teal-800 dark:text-slate-400 uppercase tracking-wider mb-3 pl-1">Öğrenciler</h2>
+            <h2 class="text-xs font-bold text-teal-800 uppercase tracking-wider mb-3 pl-1">Öğrenciler</h2>
             <div id="student-list" class="flex flex-col gap-3">
                 <!-- Students dynamically listed here -->
             </div>
-            <div id="no-students-message" class="text-center py-8 text-teal-800/50 dark:text-slate-500 hidden text-sm">
+            <div id="no-students-message" class="text-center py-8 text-teal-800/50 hidden text-sm">
                 Kayıtlı öğrenci bulunmuyor.
+            </div>
+        </div>
+
+        <!-- Backup & Restore Panel (Sade ve Kalıcı Çözüm) -->
+        <div class="mt-12 pt-6 border-t border-sky-200/50">
+            <div class="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-sky-200/30">
+                <h3 class="text-xs font-bold text-teal-900 uppercase tracking-wider mb-2">Veri Yedekleme ve Kurtarma</h3>
+                <p class="text-[10px] text-slate-500 mb-3">Güncelleme yaparken veya tarayıcı değiştirirken verilerinizi korumak için yedek kopyasını alın.</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="exportData()" class="bg-white border border-teal-200 text-teal-700 hover:bg-teal-50 text-[11px] font-semibold py-2 px-3 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-download"></i> Veriyi Yedekle
+                    </button>
+                    <button onclick="openImportModal()" class="bg-teal-50 border border-teal-100 text-teal-800 hover:bg-teal-100 text-[11px] font-semibold py-2 px-3 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-upload"></i> Veriyi Yükle
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- MAIN CURRICULUM TASK TRACKING DASHBOARD (Hidden initially) -->
     <div id="dashboard-view" class="hidden">
-        <!-- Header Section (Blending into 50-25-25 Theme with Turquoise Accents) -->
-        <header class="bg-white dark:bg-slate-900 border-b border-sky-100 dark:border-slate-800 text-slate-800 dark:text-slate-100 transition-colors duration-300">
+        <!-- Header Section (Blending into Theme) -->
+        <header class="bg-white border-b border-sky-100 text-slate-800 transition-colors duration-300">
             <div class="max-w-4xl mx-auto px-4 py-6">
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                     <div class="w-full md:w-auto flex flex-col items-center md:items-start gap-2">
-                        <h1 class="text-xl font-extrabold tracking-tight text-teal-900 dark:text-slate-100">1. Kur Görev Takibi</h1>
+                        <h1 class="text-xl font-extrabold tracking-tight text-teal-900">1. Kur Görev Takibi</h1>
                         
                         <div class="flex items-center gap-2">
-                            <div class="bg-sky-50 dark:bg-slate-850 px-3 py-1 rounded-lg border border-sky-100/60 dark:border-slate-800 flex items-center gap-2 text-xs">
-                                <div class="w-5 h-5 rounded-md bg-teal-200 dark:bg-teal-900 text-teal-800 dark:text-teal-200 flex items-center justify-center font-bold" id="active-student-avatar">
+                            <div class="bg-sky-50 px-3 py-1 rounded-lg border border-sky-100/60 flex items-center gap-2 text-xs">
+                                <div class="w-5 h-5 rounded-md bg-teal-200 text-teal-800 flex items-center justify-center font-bold" id="active-student-avatar">
                                     S
                                 </div>
-                                <span class="font-bold text-teal-900 dark:text-slate-300" id="active-student-display-name">Öğrenci</span>
+                                <span class="font-bold text-teal-900" id="active-student-display-name">Öğrenci</span>
                             </div>
-                            <button onclick="goToStudentSelection()" class="bg-teal-100/50 dark:bg-slate-800 hover:bg-teal-100 dark:hover:bg-slate-750 text-teal-800 dark:text-slate-300 text-[10px] font-semibold px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 active:scale-95">
+                            <button onclick="goToStudentSelection()" class="bg-teal-100/50 hover:bg-teal-100 text-teal-800 text-[10px] font-semibold px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 active:scale-95">
                                 <i class="fa-solid fa-arrow-left"></i> Değiştir
                             </button>
                         </div>
                     </div>
                     
-                    <!-- Progress Card (25% White Mix Accent) -->
-                    <div class="bg-slate-50 dark:bg-slate-950/50 border border-sky-100 dark:border-slate-800/80 p-4 rounded-xl w-full md:w-64 text-center transition-colors duration-300">
+                    <!-- Progress Card -->
+                    <div class="bg-slate-50 border border-sky-100 p-4 rounded-xl w-full md:w-64 text-center transition-colors duration-300">
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">İlerleme Oranı</span>
-                            <span class="text-sm font-black text-teal-600 dark:text-teal-400" id="overall-percentage">0%</span>
+                            <span class="text-xs font-semibold text-slate-500">İlerleme Oranı</span>
+                            <span class="text-sm font-black text-teal-600" id="overall-percentage">0%</span>
                         </div>
-                        <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 mb-1 overflow-hidden">
+                        <div class="w-full bg-slate-200 rounded-full h-2 mb-1 overflow-hidden">
                             <div id="overall-progress-bar" class="bg-teal-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
-                        <div class="flex justify-between items-center text-[10px] text-slate-400 dark:text-slate-500">
+                        <div class="flex justify-between items-center text-[10px] text-slate-400">
                             <span id="completed-count">0 / 0</span>
-                            <span id="footer-student-name" class="font-bold text-teal-600 dark:text-teal-400">...</span>
+                            <span id="footer-student-name" class="font-bold text-teal-600">...</span>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Main Content Area with Categories (25% White Cards Inside Light Blue World) -->
+        <!-- Main Content Area with Categories -->
         <main class="max-w-4xl mx-auto px-4 mt-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                 
                 <!-- Left Column (HADİS, ESMA, KAVRAMLAR, HİKMETLİ SÖZLER) -->
                 <div class="flex flex-col gap-4">
                     <!-- Category 1: HADİSİ ŞERİFLER -->
-                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between transition-colors duration-300">
+                    <div class="bg-white rounded-xl border border-sky-100 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('hadis')" class="hover:bg-slate-50 dark:hover:bg-slate-800/40 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('hadis')" class="hover:bg-slate-50 p-4 border-b border-sky-100 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
-                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Hadisi Şerifler</h2>
+                                    <h2 class="font-bold text-slate-700 text-sm">Hadisi Şerifler</h2>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-300 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-hadis">0%</span>
+                                    <span class="bg-teal-50 text-teal-700 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-hadis">0%</span>
                                     <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300" id="chevron-hadis"></i>
                                 </div>
                             </div>
@@ -153,15 +157,15 @@
                     </div>
 
                     <!-- Category 2: ESMAÜL HÜSNA -->
-                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between transition-colors duration-300">
+                    <div class="bg-white rounded-xl border border-sky-100 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('esma')" class="hover:bg-slate-50 dark:hover:bg-slate-800/40 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('esma')" class="hover:bg-slate-50 p-4 border-b border-sky-100 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
-                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Esmaül Hüsna</h2>
+                                    <h2 class="font-bold text-slate-700 text-sm">Esmaül Hüsna</h2>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-300 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-esma">0%</span>
+                                    <span class="bg-teal-50 text-teal-700 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-esma">0%</span>
                                     <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300" id="chevron-esma"></i>
                                 </div>
                             </div>
@@ -172,15 +176,15 @@
                     </div>
 
                     <!-- Category 3: KAVRAMLAR -->
-                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between transition-colors duration-300">
+                    <div class="bg-white rounded-xl border border-sky-100 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('kavramlar')" class="hover:bg-slate-50 dark:hover:bg-slate-800/40 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('kavramlar')" class="hover:bg-slate-50 p-4 border-b border-sky-100 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
-                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Kavramlar</h2>
+                                    <h2 class="font-bold text-slate-700 text-sm">Kavramlar</h2>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-300 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-kavramlar">0%</span>
+                                    <span class="bg-teal-50 text-teal-700 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-kavramlar">0%</span>
                                     <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300" id="chevron-kavramlar"></i>
                                 </div>
                             </div>
@@ -191,15 +195,15 @@
                     </div>
 
                     <!-- Category 4: HİKMETLİ SÖZLER -->
-                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between transition-colors duration-300">
+                    <div class="bg-white rounded-xl border border-sky-100 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('hikmet')" class="hover:bg-slate-50 dark:hover:bg-slate-800/40 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('hikmet')" class="hover:bg-slate-50 p-4 border-b border-sky-100 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
-                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Hikmetli Sözler</h2>
+                                    <h2 class="font-bold text-slate-700 text-sm">Hikmetli Sözler</h2>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-300 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-hikmet">0%</span>
+                                    <span class="bg-teal-50 text-teal-700 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-hikmet">0%</span>
                                     <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300" id="chevron-hikmet"></i>
                                 </div>
                             </div>
@@ -213,15 +217,15 @@
                 <!-- Right Column (EZBERLER, ETKİNLİK, KİTAP, UYGULAMALILAR, DEĞERLER EĞİTİMİ) -->
                 <div class="flex flex-col gap-4">
                     <!-- Category 5: 1. KUR EZBERLERİ -->
-                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between transition-colors duration-300">
+                    <div class="bg-white rounded-xl border border-sky-100 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('ezberler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/40 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('ezberler')" class="hover:bg-slate-50 p-4 border-b border-sky-100 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
-                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">1. Kur Ezberleri</h2>
+                                    <h2 class="font-bold text-slate-700 text-sm">1. Kur Ezberleri</h2>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-300 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-ezberler">0%</span>
+                                    <span class="bg-teal-50 text-teal-700 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-ezberler">0%</span>
                                     <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300" id="chevron-ezberler"></i>
                                 </div>
                             </div>
@@ -232,15 +236,15 @@
                     </div>
 
                     <!-- Category 6: ETKİNLİK -->
-                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between transition-colors duration-300">
+                    <div class="bg-white rounded-xl border border-sky-100 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('etkinlik')" class="hover:bg-slate-50 dark:hover:bg-slate-800/40 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('etkinlik')" class="hover:bg-slate-50 p-4 border-b border-sky-100 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
-                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Etkinlik</h2>
+                                    <h2 class="font-bold text-slate-700 text-sm">Etkinlik</h2>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-300 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-etkinlik">0%</span>
+                                    <span class="bg-teal-50 text-teal-700 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-etkinlik">0%</span>
                                     <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300" id="chevron-etkinlik"></i>
                                 </div>
                             </div>
@@ -251,15 +255,15 @@
                     </div>
 
                     <!-- Category 7: KİTAP OKUMA -->
-                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between transition-colors duration-300">
+                    <div class="bg-white rounded-xl border border-sky-100 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('kitap')" class="hover:bg-slate-50 dark:hover:bg-slate-800/40 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('kitap')" class="hover:bg-slate-50 p-4 border-b border-sky-100 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
-                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Kitap Okuma</h2>
+                                    <h2 class="font-bold text-slate-700 text-sm">Kitap Okuma</h2>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-300 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-kitap">0%</span>
+                                    <span class="bg-teal-50 text-teal-700 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-kitap">0%</span>
                                     <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300" id="chevron-kitap"></i>
                                 </div>
                             </div>
@@ -270,15 +274,15 @@
                     </div>
 
                     <!-- Category 8: UYGULAMALI EĞİTİMLER -->
-                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between transition-colors duration-300">
+                    <div class="bg-white rounded-xl border border-sky-100 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('uygulamali')" class="hover:bg-slate-50 dark:hover:bg-slate-800/40 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('uygulamali')" class="hover:bg-slate-50 p-4 border-b border-sky-100 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
-                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Uygulamalı Eğitimler</h2>
+                                    <h2 class="font-bold text-slate-700 text-sm">Uygulamalı Eğitimler</h2>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-300 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-uygulamali">0%</span>
+                                    <span class="bg-teal-50 text-teal-700 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-uygulamali">0%</span>
                                     <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300" id="chevron-uygulamali"></i>
                                 </div>
                             </div>
@@ -289,15 +293,15 @@
                     </div>
 
                     <!-- Category 9: DEĞERLER EĞİTİMİ -->
-                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between transition-colors duration-300">
+                    <div class="bg-white rounded-xl border border-sky-100 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('degerler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/40 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('degerler')" class="hover:bg-slate-50 p-4 border-b border-sky-100 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
-                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Değerler Eğitimi</h2>
+                                    <h2 class="font-bold text-slate-700 text-sm">Değerler Eğitimi</h2>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <span class="bg-teal-50 dark:bg-slate-800 text-teal-700 dark:text-teal-300 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-degerler">0%</span>
+                                    <span class="bg-teal-50 text-teal-700 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-degerler">0%</span>
                                     <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] transition-transform duration-300" id="chevron-degerler"></i>
                                 </div>
                             </div>
@@ -312,13 +316,13 @@
         </main>
     </div>
 
-    <!-- CUSTOM CONFIRM MODAL (Used instead of native alert/confirm popups) -->
-    <div id="confirm-modal" class="fixed inset-0 bg-slate-950/40 dark:bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-xl p-6 max-w-xs w-full text-center border border-sky-100 dark:border-slate-800 transform scale-95 transition-transform duration-300">
-            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-2" id="confirm-title">Onay</h3>
-            <p class="text-slate-500 dark:text-slate-400 text-xs mb-6 leading-relaxed" id="confirm-text">Bu işlemi onaylıyor musunuz?</p>
+    <!-- CUSTOM CONFIRM MODAL -->
+    <div id="confirm-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl p-6 max-w-xs w-full text-center border border-sky-100 transform scale-95 transition-transform duration-300">
+            <h3 class="text-sm font-bold text-slate-800 mb-2" id="confirm-title">Onay</h3>
+            <p class="text-slate-500 text-xs mb-6 leading-relaxed" id="confirm-text">Bu işlemi onaylıyor musunuz?</p>
             <div class="flex gap-2">
-                <button onclick="closeConfirmModal()" class="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2 rounded-lg transition-all text-xs active:scale-95">
+                <button onclick="closeConfirmModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 rounded-lg transition-all text-xs active:scale-95">
                     İptal
                 </button>
                 <button id="confirm-yes-btn" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-semibold py-2 rounded-lg transition-all text-xs active:scale-95">
@@ -328,9 +332,26 @@
         </div>
     </div>
 
+    <!-- DATA TRANSFER MODAL (Backup/Restore) -->
+    <div id="transfer-modal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl p-6 max-w-sm w-full border border-sky-100 transform scale-95 transition-transform duration-300">
+            <h3 class="text-sm font-bold text-teal-900 mb-2" id="transfer-modal-title">Yedek Yükle</h3>
+            <p class="text-slate-500 text-[11px] mb-4" id="transfer-modal-desc">Yedekleme metnini aşağıdaki kutuya yapıştırıp "Yükle" butonuna basın.</p>
+            <textarea id="transfer-text-area" class="w-full h-32 p-3 bg-slate-50 border border-slate-200 rounded-lg text-[11px] font-mono focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 mb-4" placeholder="Yedekleme kodunu buraya yapıştırın..."></textarea>
+            <div class="flex gap-2">
+                <button onclick="closeTransferModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 rounded-lg transition-all text-xs active:scale-95">
+                    İptal
+                </button>
+                <button id="transfer-action-btn" class="flex-1 bg-teal-600 hover:bg-teal-500 text-white font-semibold py-2 rounded-lg transition-all text-xs active:scale-95">
+                    Yükle
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Javascript Logic -->
     <script>
-        // Curriculum Database (Updated perfectly with {EABFFEE8-E10A-47E4-B323-2D55A1348905}.png & Değerler Eğitimi)
+        // Curriculum Database (Birebir {EABFFEE8-E10A-47E4-B323-2D55A1348905}.png & Değerler Eğitimi)
         const curriculumData = {
             hadis: [
                 { id: "hadis_1", title: "1- TEBESSÜM SADAKADIR.", desc: "Gülümsemek, karşı tarafa güven veren ve sadaka hükmünde olan çok kıymetli bir sünnettir." },
@@ -392,7 +413,44 @@
         const STORAGE_PROGRESS_DATA = "1_kur_students_progress_v4";
         const STORAGE_THEME = "1_kur_theme_v4";
 
-        // Memory states
+        // Akıllı Otomatik Sürüm Taşıma (Data Migration Helper)
+        // Kullanıcı önceden farklı kod sürümlerinde öğrenci eklediyse verilerini otomatik tespit eder ve v4'e taşır.
+        function autoMigrateData() {
+            const versions = ["v4", "v5", "v6", "v7", "v8"];
+            const targetSuffix = "v4"; // Orijinal anahtara geri dönüyoruz.
+            
+            let foundSuffix = null;
+            for (let sfx of versions) {
+                if (sfx === targetSuffix) continue;
+                let testList = localStorage.getItem("1_kur_students_list_" + sfx);
+                if (testList) {
+                    try {
+                        let parsed = JSON.parse(testList);
+                        if (parsed && parsed.length > 0) {
+                            foundSuffix = sfx;
+                            break;
+                        }
+                    } catch(e){}
+                }
+            }
+
+            // Eğer başka bir sürümde veri bulursak ve mevcut hedefimiz boşsa kopyala
+            const currentDataExist = localStorage.getItem("1_kur_students_list_" + targetSuffix);
+            if (foundSuffix && (!currentDataExist || JSON.parse(currentDataExist).length === 0)) {
+                const oldStudents = localStorage.getItem("1_kur_students_list_" + foundSuffix);
+                const oldProgress = localStorage.getItem("1_kur_students_progress_" + foundSuffix);
+                const oldActive = localStorage.getItem("1_kur_active_student_id_" + foundSuffix);
+                
+                if (oldStudents) localStorage.setItem("1_kur_students_list_" + targetSuffix, oldStudents);
+                if (oldProgress) localStorage.setItem("1_kur_students_progress_" + targetSuffix, oldProgress);
+                if (oldActive) localStorage.setItem("1_kur_active_student_id_" + targetSuffix, oldActive);
+            }
+        }
+
+        // Run auto migration on script start
+        autoMigrateData();
+
+        // Load states from LocalStorage
         let students = JSON.parse(localStorage.getItem(STORAGE_STUDENTS_LIST)) || [];
         let activeStudentId = localStorage.getItem(STORAGE_ACTIVE_ID) || "";
         let progressMap = JSON.parse(localStorage.getItem(STORAGE_PROGRESS_DATA)) || {};
@@ -548,19 +606,32 @@
             students.forEach(student => {
                 const stats = getStudentStats(student.id);
                 
-                // Color customization for fully completed student
+                // Color customization for fully completed student card
                 const cardStyle = stats.isFullyCompleted
-                    ? 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900/50 text-emerald-900 dark:text-emerald-100 hover:border-emerald-300 dark:hover:border-emerald-800'
-                    : 'bg-white dark:bg-slate-900 border-sky-100 dark:border-slate-800 text-slate-800 dark:text-slate-100 hover:border-sky-200 dark:hover:border-slate-700';
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-900 hover:border-emerald-300'
+                    : 'bg-white border-sky-100 text-slate-800 hover:border-sky-200';
                 
                 const badgeStyle = stats.isFullyCompleted
                     ? 'bg-emerald-500 text-white border-emerald-600'
-                    : 'bg-teal-50 dark:bg-slate-950 text-teal-700 dark:text-teal-300 border-teal-100 dark:border-slate-850 group-hover:bg-teal-600 dark:group-hover:bg-slate-100 group-hover:text-white dark:group-hover:text-slate-900';
+                    : 'bg-teal-50 text-teal-700 border-teal-100 group-hover:bg-teal-600 group-hover:text-white';
                 
-                const countColor = stats.isFullyCompleted ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500';
+                const countColor = stats.isFullyCompleted ? 'text-emerald-600' : 'text-slate-400';
+
+                // Seviyeye göre dinamik renk belirleme (Yüzdelik göstergesi için)
+                let levelStyle = '';
+                if (stats.percentage <= 25) {
+                    levelStyle = 'bg-rose-50 text-rose-600 border-rose-200';
+                } else if (stats.percentage <= 50) {
+                    levelStyle = 'bg-amber-50 text-amber-600 border-amber-200';
+                } else if (stats.percentage <= 75) {
+                    levelStyle = 'bg-sky-50 text-sky-600 border-sky-200';
+                } else {
+                    levelStyle = 'bg-emerald-50 text-emerald-600 border-emerald-200';
+                }
 
                 const studentCard = `
                     <div class="${cardStyle} border rounded-xl p-3 flex items-center justify-between transition-all cursor-pointer group active:scale-[0.98]" onclick="selectStudent('${student.id}')">
+                        <!-- Sol Taraf: Avatar ve İsim -->
                         <div class="flex items-center gap-3 min-w-0 flex-1">
                             <div class="w-9 h-9 rounded-lg border font-extrabold flex items-center justify-center text-sm transition-colors shrink-0 ${badgeStyle}">
                                 ${student.name.charAt(0).toUpperCase()}
@@ -569,12 +640,18 @@
                                 <h3 class="font-bold text-xs md:text-sm transition-colors truncate">
                                     ${student.name} <span class="font-semibold ${countColor}">"${stats.completed}/${stats.total}"</span>
                                 </h3>
-                                <p class="text-[10px] font-semibold ${stats.isFullyCompleted ? 'text-emerald-600' : 'text-slate-400 dark:text-slate-500'}">%${stats.percentage}</p>
                             </div>
                         </div>
-                        <button onclick="confirmDeleteStudent('${student.id}', event)" class="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-950 hover:bg-red-50 dark:hover:bg-red-950/50 text-slate-400 hover:text-red-500 flex items-center justify-center transition-all shrink-0 active:scale-90" title="Sil">
-                            <i class="fa-solid fa-trash-can text-[10px]"></i>
-                        </button>
+                        
+                        <!-- Sağ Taraf: Seviyeye Göre Renklenen Yüzdelik Rozeti ve Silme Butonu -->
+                        <div class="flex items-center gap-3 shrink-0">
+                            <span class="px-2.5 py-1.5 rounded-xl border text-xs sm:text-sm font-bold shadow-sm transition-all ${levelStyle}">
+                                %${stats.percentage}
+                            </span>
+                            <button onclick="confirmDeleteStudent('${student.id}', event)" class="w-8 h-8 rounded-full bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 flex items-center justify-center transition-all shrink-0 active:scale-90" title="Sil">
+                                <i class="fa-solid fa-trash-can text-[10px]"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
                 listContainer.insertAdjacentHTML('beforeend', studentCard);
@@ -630,7 +707,7 @@
             });
         }
 
-        // Render Curriculum (Using UNIFORM TURQUOISE Accent for all categories)
+        // Render Curriculum (Using Uniform Turquoise Style)
         function renderCurriculum() {
             const categories = Object.keys(curriculumData);
             const activeStudentProgress = progressMap[activeStudentId] || {};
@@ -644,36 +721,35 @@
                 curriculumData[cat].forEach(item => {
                     const isChecked = activeStudentProgress[item.id] || false;
                     
-                    // Unified styling parameters (ALL categories are now Turquoise!)
                     let checkColorClass = 'text-teal-600 focus:ring-teal-500';
-                    let cardBorderLeft = 'border-l-4 border-l-teal-400 dark:border-l-teal-500';
+                    let cardBorderLeft = 'border-l-4 border-l-teal-400';
 
                     const itemHTML = `
-                        <div class="bg-white dark:bg-slate-900 hover:bg-slate-50/50 dark:hover:bg-slate-850/50 rounded-lg p-2.5 border border-sky-100/60 dark:border-slate-800/80 transition-all shadow-sm ${cardBorderLeft}">
+                        <div class="bg-white hover:bg-slate-50/50 rounded-lg p-2.5 border border-sky-100/60 transition-all shadow-sm ${cardBorderLeft}">
                             <div class="flex items-start justify-between gap-2">
-                                <!-- Left side: expandable details click zone -->
+                                <!-- Sol taraf: Detay açma tıklama alanı -->
                                 <div class="flex items-start gap-2 cursor-pointer flex-1 select-none py-1 active:opacity-75" onclick="toggleDetails('${item.id}')">
                                     <div class="mt-1 text-[8px] text-teal-400 transition-transform duration-200 id-arrow-${item.id} shrink-0">
                                         <i class="fa-solid fa-chevron-right"></i>
                                     </div>
                                     <div class="min-w-0 flex-1">
-                                        <h4 class="font-semibold text-slate-700 dark:text-slate-300 text-xs hover:text-teal-600 transition-colors break-words ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : ''}" id="title-${item.id}">
+                                        <h4 class="font-semibold text-slate-700 text-xs hover:text-teal-600 transition-colors break-words ${isChecked ? 'line-through text-slate-400' : ''}" id="title-${item.id}">
                                             ${item.title}
                                         </h4>
                                     </div>
                                 </div>
                                 
-                                <!-- Right side: standalone check button -->
+                                <!-- Sağ taraf: Bağımsız check butonu -->
                                 <div class="flex items-center justify-center p-1" onclick="event.stopPropagation()">
                                     <input type="checkbox" id="check-${item.id}" 
                                         ${isChecked ? 'checked' : ''} 
                                         onchange="toggleTask('${item.id}', event)"
-                                        class="w-5 h-5 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 ${checkColorClass} transition-all cursor-pointer focus:ring-offset-0 focus:ring-1">
+                                        class="w-5 h-5 rounded border-slate-300 bg-white ${checkColorClass} transition-all cursor-pointer focus:ring-offset-0 focus:ring-1">
                                 </div>
                             </div>
                             
-                            <!-- Hidden details slide-down window -->
-                            <div id="details-${item.id}" class="hidden mt-2 pt-2 border-t border-sky-50 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed bg-sky-50/20 dark:bg-slate-950/30 p-2.5 rounded-lg">
+                            <!-- Gizli detay sürgüsü -->
+                            <div id="details-${item.id}" class="hidden mt-2 pt-2 border-t border-sky-50 text-[11px] text-slate-500 leading-relaxed bg-sky-50/20 p-2.5 rounded-lg">
                                 ${item.desc}
                             </div>
                         </div>
@@ -696,9 +772,9 @@
             const titleEl = document.getElementById(`title-${id}`);
             if (titleEl) {
                 if (event.target.checked) {
-                    titleEl.classList.add('line-through', 'text-slate-400', 'dark:text-slate-500');
+                    titleEl.classList.add('line-through', 'text-slate-400');
                 } else {
-                    titleEl.classList.remove('line-through', 'text-slate-400', 'dark:text-slate-500');
+                    titleEl.classList.remove('line-through', 'text-slate-400');
                 }
             }
             
@@ -730,7 +806,7 @@
                 if (isCollapsed) {
                     container.classList.remove('hidden');
                     if (chevron) {
-                        chevron.className = "fa-solid fa-chevron-up text-teal-600 dark:text-teal-400 text-[10px] transition-transform duration-300 rotate-180";
+                        chevron.className = "fa-solid fa-chevron-up text-teal-600 text-[10px] transition-transform duration-300 rotate-180";
                     }
                     collapsedCategories[cat] = false;
                 } else {
@@ -784,14 +860,84 @@
             if (completedCountEl) completedCountEl.textContent = `${completedTasks} / ${totalTasks}`;
         }
 
+        // Backup (Export) Function
+        function exportData() {
+            const dataToExport = {
+                students: students,
+                progressMap: progressMap
+            };
+            const jsonString = btoa(unescape(encodeURIComponent(JSON.stringify(dataToExport))));
+            
+            // Panoya kopyala
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = jsonString;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            // Başarılı uyarısı yerine basit bir bildirim düğmesi veya custom modal açabiliriz
+            showConfirmModal("Yedek Kopyalandı", "Tüm öğrenci ve görev verileriniz güvenli bir kod olarak panoya kopyalandı! Bu kodu saklayarak dilediğiniz zaman yükleyebilirsiniz.", null, true);
+        }
+
+        // Import (Restore) Functions
+        function openImportModal() {
+            document.getElementById('transfer-text-area').value = "";
+            document.getElementById('transfer-modal').classList.remove('hidden');
+            document.getElementById('transfer-modal').classList.add('flex');
+            
+            const actionBtn = document.getElementById('transfer-action-btn');
+            actionBtn.onclick = function() {
+                const rawInput = document.getElementById('transfer-text-area').value.trim();
+                if (!rawInput) return;
+
+                try {
+                    const decrypted = decodeURIComponent(escape(atob(rawInput)));
+                    const parsed = JSON.parse(decrypted);
+
+                    if (parsed && parsed.students && parsed.progressMap) {
+                        students = parsed.students;
+                        progressMap = parsed.progressMap;
+
+                        localStorage.setItem(STORAGE_STUDENTS_LIST, JSON.stringify(students));
+                        localStorage.setItem(STORAGE_PROGRESS_DATA, JSON.stringify(progressMap));
+
+                        closeTransferModal();
+                        renderStudentList();
+                        showConfirmModal("Yükleme Başarılı", "Tüm yedek verileriniz başarıyla tarayıcıya aktarıldı.", function() {
+                            initApp();
+                        }, true);
+                    } else {
+                        showConfirmModal("Hata", "Geçersiz yedekleme kodu girdiniz. Lütfen kodu kontrol edin.", null, true);
+                    }
+                } catch(e) {
+                    showConfirmModal("Hata", "Yedekleme kodu çözümlenemedi. Eksik veya bozuk yapıştırmış olabilirsiniz.", null, true);
+                }
+            };
+        }
+
+        function closeTransferModal() {
+            document.getElementById('transfer-modal').classList.add('hidden');
+            document.getElementById('transfer-modal').classList.remove('flex');
+        }
+
         let confirmCallback = null;
-        function showConfirmModal(title, text, onConfirm) {
+        function showConfirmModal(title, text, onConfirm, isAlertMode = false) {
             document.getElementById('confirm-title').innerText = title;
             document.getElementById('confirm-text').innerText = text;
             
             const yesBtn = document.getElementById('confirm-yes-btn');
-            yesBtn.innerText = "Sil";
-            yesBtn.className = "flex-1 bg-red-600 hover:bg-red-500 text-white font-semibold py-2 rounded-lg transition-all text-xs active:scale-95";
+            
+            if (isAlertMode) {
+                yesBtn.innerText = "Tamam";
+                yesBtn.className = "flex-1 bg-teal-600 hover:bg-teal-500 text-white font-semibold py-2 rounded-lg transition-all text-xs active:scale-95";
+                // İptal butonunu saklayalım
+                document.querySelector('#confirm-modal button[onclick="closeConfirmModal()"]').classList.add('hidden');
+            } else {
+                yesBtn.innerText = "Sil";
+                yesBtn.className = "flex-1 bg-red-600 hover:bg-red-500 text-white font-semibold py-2 rounded-lg transition-all text-xs active:scale-95";
+                document.querySelector('#confirm-modal button[onclick="closeConfirmModal()"]').classList.remove('hidden');
+            }
 
             document.getElementById('confirm-modal').classList.remove('hidden');
             document.getElementById('confirm-modal').classList.add('flex');
