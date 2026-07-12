@@ -23,7 +23,7 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-        /* Custom scrollbar for better styling */
+        /* Custom scrollbar for better styling --> */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -228,9 +228,9 @@
                     </div>
                 </div>
 
-                <!-- Right Column (EZBERLER, ETKİNLİK, KİTAP, UYGULAMALILAR) -->
+                <!-- Right Column (EZBERLER, ETKİNLİK, KİTAP, UYGULAMALILAR, DEĞERLER EĞİTİMİ) -->
                 <div class="flex flex-col gap-4">
-                    <!-- Category 5: 1. KUR EZBERLERİ -->
+                    <!-- Category 5: 2. Kur Ezberleri -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
                             <div onclick="toggleCategory('ezberler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
@@ -302,6 +302,25 @@
                             </div>
                             <div id="container-uygulamali" class="transition-all duration-300 hidden">
                                 <div class="p-3 space-y-2" id="uygulamali-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 9: DEĞERLER EĞİTİMİ -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div onclick="toggleCategory('degerler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Değerler Eğitimi</h2>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-degerler">0%</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300" id="chevron-degerler"></i>
+                                </div>
+                            </div>
+                            <div id="container-degerler" class="transition-all duration-300 hidden">
+                                <div class="p-3 space-y-2" id="degerler-list"></div>
                             </div>
                         </div>
                     </div>
@@ -406,8 +425,12 @@
                 { id: "kitap_ali_2", title: "ALİ'NİN SECCADESİ (Sayfa 10-20)", desc: "10-20 sayfalarının okunarak namazın hayatımızdaki yerinin öğrenilmesi." }
             ],
             uygulamali: [
-                { id: "uyg_sabah", title: "UYGULAMALI ÖĞLE NAMAZI", desc: "öğle namazının sünneti ve farzının, okunuşları ve hareketleriyle birlikte tam olarak uygulanması." },
+                { id: "uyg_sabah", title: "UYGULAMALI ÖĞLE NAMAZI", desc: "Öğle namazının sünneti ve farzının, okunuşları ve hareketleriyle birlikte tam olarak uygulanması." },
                 { id: "uyg_ikindi", title: "UYGULAMALI İKİNDİ NAMAZI", desc: "İkindi namazının sünneti ve farzının, rükun ve secdelerine tam dikkat edilerek pratik edilmesi." }
+            ],
+            degerler: [
+                { id: "degerler_3", title: "3. NEDEN NAMAZ?", desc: "Namazın dinimizdeki yeri ve önemi, niçin namaz kılıyoruz sorusuna kalbi cevaplar ve namazın insan ruhuna ve bedenine kazandırdığı yüce değerler." },
+                { id: "degerler_4", title: "4. AMAÇLI YAŞAMANIN ÖNEMİ?", desc: "Yaratılış gayemizin farkında olarak yaşamak, ömrü faydalı amellerle süslemek ve her saniyenin kıymetini bilerek sorumluluk bilinci taşımak." }
             ]
         };
 
@@ -467,7 +490,8 @@
             ezberler: true,
             etkinlik: true,
             kitap: true,
-            uygulamali: true
+            uygulamali: true,
+            degerler: true
         };
 
         // Window load router
