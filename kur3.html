@@ -59,6 +59,11 @@
     <div id="student-view" class="max-w-md mx-auto px-4 py-12 md:py-20">
         <div class="text-center mb-8">
             <h1 class="text-2xl font-bold tracking-tight text-teal-900 dark:text-teal-400">3. Kur Öğrenci Girişi</h1>
+            <!-- Migration Success Notification Badge -->
+            <div id="migration-alert" class="hidden mt-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 rounded-xl p-3 text-xs text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400"></i>
+                <span>2. Kur'daki öğrencileriniz başarıyla 3. Kur'a aktarıldı!</span>
+            </div>
         </div>
 
         <!-- Add Student Card -->
@@ -230,13 +235,13 @@
 
                 <!-- Right Column (EZBERLER, ETKİNLİK, KİTAP, UYGULAMALILAR, DEĞERLER EĞİTİMİ) -->
                 <div class="flex flex-col gap-4">
-                    <!-- Category 5: 3. Kur Ezberleri -->
+                    <!-- Category 5: 1. KUR EZBERLERİ -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
                             <div onclick="toggleCategory('ezberler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
-                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">3. Kur Ezberleri</h2>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">1. Kur Ezberleri</h2>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-ezberler">0%</span>
@@ -445,6 +450,7 @@
         function autoMigrateData() {
             const currentDataExist = localStorage.getItem(STORAGE_STUDENTS_LIST);
             if (!currentDataExist || JSON.parse(currentDataExist).length === 0) {
+                // Try importing from 2. Kur (V4 key)
                 const oldStudents = localStorage.getItem("2_kur_students_list_v4");
                 if (oldStudents) {
                     try {
@@ -457,6 +463,12 @@
                                 cleanProgress[st.id] = {};
                             });
                             localStorage.setItem(STORAGE_PROGRESS_DATA, JSON.stringify(cleanProgress));
+                            
+                            // Show migration notification
+                            setTimeout(() => {
+                                const alertBox = document.getElementById("migration-alert");
+                                if (alertBox) alertBox.classList.remove("hidden");
+                            }, 300);
                         }
                     } catch(e) {
                         console.error("Migration error: ", e);
