@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>3. Kur Görev Takip Sistemi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <!-- Google Fonts (Plus Jakarta Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons for Beautiful Visuals -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Custom scrollbar for better styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bae6fd;
+            border-radius: 9999px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+        }
+    </style>
+</head>
+<body class="bg-sky-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen pb-16 transition-colors duration-300">
+
+    <!-- Confetti Canvas for 100% completion celebration -->
+    <canvas id="confetti-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-50"></canvas>
+
+    <!-- Floating Theme Toggle Space -->
+    <div class="fixed top-4 right-4 z-50 flex gap-2">
+        <button onclick="toggleTheme()" id="theme-toggle-btn" class="w-10 h-10 rounded-xl border border-sky-200 bg-white text-teal-600 dark:border-slate-800 dark:bg-slate-900 dark:text-teal-400 hover:bg-sky-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center shadow-md active:scale-95" aria-label="Tema Değiştir">
+            <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+        </button>
+    </div>
+
+    <!-- STUDENT SELECTION & CREATION SCREEN -->
+    <div id="student-view" class="max-w-md mx-auto px-4 py-12 md:py-20">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold tracking-tight text-teal-900 dark:text-teal-400">3. Kur Öğrenci Girişi</h1>
+        </div>
+
+        <!-- Add Student Card -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-sky-100 dark:border-slate-800 p-5 mb-8 shadow-sm">
+            <div class="flex flex-col gap-3">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 dark:text-slate-500">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                    <input type="text" id="new-student-name" placeholder="Öğrenci Adı" 
+                        class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-10 pr-4 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:bg-white dark:focus:bg-slate-800 transition-all text-sm">
+                </div>
+                <button onclick="createNewStudent()" class="w-full bg-teal-600 hover:bg-teal-500 dark:bg-teal-700 dark:hover:bg-teal-600 text-white font-semibold py-3 px-4 rounded-xl transition-all active:scale-95 text-sm flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-plus"></i> Öğrenci Ekle
+                </button>
+            </div>
+        </div>
+
+        <!-- Student List -->
+        <div>
+            <h2 class="text-xs font-bold text-teal-800 dark:text-teal-400 uppercase tracking-wider mb-3 pl-1">Öğrenciler</h2>
+            <div id="student-list" class="flex flex-col gap-3">
+                <!-- Students dynamically listed here -->
+            </div>
+            <div id="no-students-message" class="text-center py-8 text-teal-800/50 dark:text-teal-400/50 hidden text-sm">
+                Kayıtlı öğrenci bulunmuyor.
+            </div>
+        </div>
+
+        <!-- Backup & Restore Panel -->
+        <div class="mt-12 pt-6 border-t border-sky-200/50 dark:border-slate-800/50">
+            <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm p-4 rounded-xl border border-sky-200/30 dark:border-slate-800/30">
+                <h3 class="text-xs font-bold text-teal-900 dark:text-teal-400 uppercase tracking-wider mb-2">Veri Yedekleme ve Kurtarma</h3>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-3">Güncelleme yaparken veya tarayıcı değiştirirken verilerinizi korumak için yedek kopyasını alın.</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="exportData()" class="bg-white dark:bg-slate-800 border border-teal-200 dark:border-teal-900 text-teal-700 dark:text-teal-400 hover:bg-sky-50 dark:hover:bg-slate-700 text-[11px] font-semibold py-2 px-3 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-download"></i> Veriyi Yedekle
+                    </button>
+                    <button onclick="openImportModal()" class="bg-teal-50 dark:bg-teal-950/40 border border-teal-100 dark:border-teal-900/60 text-teal-800 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-900/60 text-[11px] font-semibold py-2 px-3 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-upload"></i> Veriyi Yükle
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CURRICULUM TASK TRACKING DASHBOARD (Hidden initially) -->
+    <div id="dashboard-view" class="hidden">
+        <!-- Header Section -->
+        <header class="bg-white dark:bg-slate-900 border-b border-sky-100 dark:border-slate-800 text-slate-800 dark:text-slate-100 transition-colors duration-300">
+            <div class="max-w-4xl mx-auto px-4 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="w-full md:w-auto flex flex-col items-center md:items-start gap-2">
+                        <h1 class="text-xl font-extrabold tracking-tight text-teal-900 dark:text-teal-400">3. Kur Görev Takibi</h1>
+                        
+                        <div class="flex items-center gap-2">
+                            <div class="bg-sky-50 dark:bg-slate-800 px-3 py-1 rounded-lg border border-sky-100/60 dark:border-slate-700/60 flex items-center gap-2 text-xs">
+                                <div class="w-5 h-5 rounded-md bg-teal-200 dark:bg-teal-900 text-teal-800 dark:text-teal-200 flex items-center justify-center font-bold" id="active-student-avatar">
+                                    S
+                                </div>
+                                <span class="font-bold text-teal-900 dark:text-teal-300" id="active-student-display-name">Öğrenci</span>
+                            </div>
+                            <button onclick="goToStudentSelection()" class="bg-teal-100/50 hover:bg-teal-100 dark:bg-teal-950 dark:hover:bg-teal-900 text-teal-800 dark:text-teal-300 text-[10px] font-semibold px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 active:scale-95">
+                                <i class="fa-solid fa-arrow-left"></i> Değiştir
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Card -->
+                    <div class="bg-slate-50 dark:bg-slate-800/50 border border-sky-100 dark:border-slate-800 p-4 rounded-xl w-full md:w-64 text-center transition-colors duration-300">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">İlerleme Oranı</span>
+                            <span class="text-sm font-black text-teal-600 dark:text-teal-400" id="overall-percentage">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-1 overflow-hidden">
+                            <div id="overall-progress-bar" class="bg-teal-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px] text-slate-400 dark:text-slate-500">
+                            <span id="completed-count">0 / 0</span>
+                            <span id="footer-student-name" class="font-bold text-teal-600 dark:text-teal-400">...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area with Categories -->
+        <main class="max-w-4xl mx-auto px-4 mt-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+                
+                <!-- Left Column (HADİS, ESMA, KAVRAMLAR, HİKMETLİ SÖZLER) -->
+                <div class="flex flex-col gap-4">
+                    <!-- Category 1: HADİSİ ŞERİFLER -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div onclick="toggleCategory('hadis')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Hadisi Şerifler</h2>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-hadis">0%</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300" id="chevron-hadis"></i>
+                                </div>
+                            </div>
+                            <div id="container-hadis" class="transition-all duration-300 hidden">
+                                <div class="p-3 space-y-2" id="hadis-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 2: ESMAÜL HÜSNA -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div onclick="toggleCategory('esma')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Esmaül Hüsna</h2>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-esma">0%</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300" id="chevron-esma"></i>
+                                </div>
+                            </div>
+                            <div id="container-esma" class="transition-all duration-300 hidden">
+                                <div class="p-3 space-y-2" id="esma-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 3: KAVRAMLAR -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div onclick="toggleCategory('kavramlar')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Kavramlar</h2>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-kavramlar">0%</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300" id="chevron-kavramlar"></i>
+                                </div>
+                            </div>
+                            <div id="container-kavramlar" class="transition-all duration-300 hidden">
+                                <div class="p-3 space-y-2" id="kavramlar-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 4: HİKMETLİ SÖZLER -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div onclick="toggleCategory('hikmet')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Hikmetli Sözler</h2>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-hikmet">0%</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300" id="chevron-hikmet"></i>
+                                </div>
+                            </div>
+                            <div id="container-hikmet" class="transition-all duration-300 hidden">
+                                <div class="p-3 space-y-2" id="hikmet-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column (EZBERLER, ETKİNLİK, KİTAP, UYGULAMALILAR, DEĞERLER EĞİTİMİ) -->
+                <div class="flex flex-col gap-4">
+                    <!-- Category 5: 3. Kur Ezberleri -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div onclick="toggleCategory('ezberler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">3. Kur Ezberleri</h2>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-ezberler">0%</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300" id="chevron-ezberler"></i>
+                                </div>
+                            </div>
+                            <div id="container-ezberler" class="transition-all duration-300 hidden">
+                                <div class="p-3 space-y-2" id="ezberler-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 6: ETKİNLİK -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div onclick="toggleCategory('etkinlik')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Etkinlik</h2>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-etkinlik">0%</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300" id="chevron-etkinlik"></i>
+                                </div>
+                            </div>
+                            <div id="container-etkinlik" class="transition-all duration-300 hidden">
+                                <div class="p-3 space-y-2" id="etkinlik-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 7: KİTAP OKUMA -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div onclick="toggleCategory('kitap')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Kitap Okuma</h2>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-kitap">0%</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300" id="chevron-kitap"></i>
+                                </div>
+                            </div>
+                            <div id="container-kitap" class="transition-all duration-300 hidden">
+                                <div class="p-3 space-y-2" id="kitap-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 8: UYGULAMALI EĞİTİMLER -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div onclick="toggleCategory('uygulamali')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Uygulamalı Eğitimler</h2>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-uygulamali">0%</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300" id="chevron-uygulamali"></i>
+                                </div>
+                            </div>
+                            <div id="container-uygulamali" class="transition-all duration-300 hidden">
+                                <div class="p-3 space-y-2" id="uygulamali-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 9: DEĞERLER EĞİTİMİ -->
+                    <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div onclick="toggleCategory('degerler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Değerler Eğitimi</h2>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-degerler">0%</span>
+                                    <i class="fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300" id="chevron-degerler"></i>
+                                </div>
+                            </div>
+                            <div id="container-degerler" class="transition-all duration-300 hidden">
+                                <div class="p-3 space-y-2" id="degerler-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- SUCCESS BANNER OVERLAY -->
+    <div id="success-banner" class="fixed inset-0 bg-slate-950/40 dark:bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-8 max-w-sm w-full text-center border border-teal-100 dark:border-slate-800 shadow-xl transform scale-95 transition-transform duration-300">
+            <div class="w-16 h-16 bg-teal-50 dark:bg-teal-950/50 text-teal-600 dark:text-teal-400 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">Başarı ile bitirdiniz</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-xs mb-6">3. Kur kapsamındaki tüm görev ve müfredat çalışmalarını başarıyla tamamladınız.</p>
+            <button onclick="closeSuccessBanner()" class="w-full bg-teal-600 hover:bg-teal-500 dark:bg-teal-700 dark:hover:bg-teal-600 text-white font-semibold py-2.5 rounded-xl transition-all shadow-sm active:scale-95 text-xs">
+                Tamam
+            </button>
+        </div>
+    </div>
+
+    <!-- CUSTOM CONFIRM MODAL (Replacement of native confirm) -->
+    <div id="confirm-modal" class="fixed inset-0 bg-slate-950/40 dark:bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-xl p-6 max-w-xs w-full text-center border border-sky-100 dark:border-slate-800 transform scale-95 transition-transform duration-300">
+            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-2" id="confirm-title">Onay</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-xs mb-6 leading-relaxed" id="confirm-text">Bu işlemi onaylıyor musunuz?</p>
+            <div class="flex gap-2">
+                <button onclick="closeConfirmModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2 rounded-lg transition-all text-xs active:scale-95">
+                    İptal
+                </button>
+                <button id="confirm-yes-btn" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-semibold py-2 rounded-lg transition-all text-xs active:scale-95">
+                    Evet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA TRANSFER MODAL (Backup/Restore) -->
+    <div id="transfer-modal" class="fixed inset-0 bg-slate-950/40 dark:bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-xl p-6 max-w-sm w-full border border-sky-100 dark:border-slate-800 transform scale-95 transition-transform duration-300">
+            <h3 class="text-sm font-bold text-teal-900 dark:text-teal-400 mb-2" id="transfer-modal-title">Yedek Yükle</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-[11px] mb-4" id="transfer-modal-desc">Yedekleme metnini aşağıdaki kutuya yapıştırıp "Yükle" butonuna basın.</p>
+            <textarea id="transfer-text-area" class="w-full h-32 p-3 bg-slate-50 border border-slate-200 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100 rounded-lg text-[11px] font-mono focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 mb-4" placeholder="Yedekleme kodunu buraya yapıştırın..."></textarea>
+            <div class="flex gap-2">
+                <button onclick="closeTransferModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold py-2 rounded-lg transition-all text-xs active:scale-95">
+                    İptal
+                </button>
+                <button id="transfer-action-btn" class="flex-1 bg-teal-600 hover:bg-teal-500 dark:bg-teal-700 dark:hover:bg-teal-600 text-white font-semibold py-2 rounded-lg transition-all text-xs active:scale-95">
+                    Yükle
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Javascript Logic -->
+    <script>
+        // Curriculum Database for 3. Kur matching {23AC5301-7DC9-47E4-AFA9-A33861046398}.png
+        const curriculumData = {
+            hadis: [
+                { id: "hadis_11", title: "11- ÜÇ KİŞİ İKEN İKİNİZ FISILDAŞMAYIN! BU HAL DİĞERİNİ ÜZER.", desc: "Başkalarının yanında gizli konuşmak veya fısıldaşmak, dışarıda kalan kişiyi dışlanmış hissettirir ve üzer. İslam bu tür incitici davranışları yasaklar." },
+                { id: "hadis_12", title: "12- KİŞİ YALAN SÖYLEDİĞİNDE YALANIN O KÖTÜ KOKUSUNDAN MELEKLER KAÇAR.", desc: "Yalan, ruhu ve manevi çevreyi kirleten en büyük günahlardandır. Doğru sözlülük ise meleklerin sevgisini ve rahmetini celbeder." },
+                { id: "hadis_13", title: "13- ÖMRÜNÜN UZAMASINI VE RIZKININ ARTMASINI İSTEYEN ANNE VE BABASINA İYİLİK ETSİN !", desc: "Anne babaya yapılan iyilik ve saygı, ömre bereket, rızka genişlik getirir; dünya ve ahiret mutluluğunun kapısıdır." },
+                { id: "hadis_14", title: "14- LAF TAŞIYARAK İNSANLARIN ARASINI BOZAN KİMSE CENNETE GİREMEZ.", desc: "Laf taşımak (nemime), insanlar arasında nefrete, fitneye ve düşmanlığa yol açan büyük bir ahlaki kusurdur." },
+                { id: "hadis_15", title: "15- ALLAH SİZİN DIŞ GÖRÜNÜŞ VE MALLARINIZA BAKMAZ, O SİZİN KALPLERİNİZİN GÜZELLİĞİNE BAKAR.", desc: "Allah katındaki değerimiz mal, mülk veya fiziki güzellikle değil, kalbimizin temizliği, samimiyetimiz ve güzel amellerimizle ölçülür." }
+            ],
+            esma: [
+                { id: "esma_7", title: "7- ES-SEMÎ : HERŞEYİ İŞİTEN ALLAH.", desc: "Gizli veya açık, sesli veya sessiz yapılan tüm duaları, konuşmaları ve içten geçenleri hakkıyla işiten, dualara icabet eden." },
+                { id: "esma_8", title: "8- EL-BASÎR : HERŞEYİ GÖREN ALLAH.", desc: "Karanlıkta veya aydınlıkta, mikro veya makro düzeyde, gizli olan hiçbir şeyin kendisinden kaçamadığı, her şeyi eksiksiz gören." },
+                { id: "esma_9", title: "9- EL-ADL: ADALETLİ OLAN ALLAH.", desc: "Asla zulmetmeyen, her şeye tam hakkını veren, her yarattığını tam yerli yerinde ve dengede var eden mutlak adalet sahibi." }
+            ],
+            kavramlar: [
+                { id: "kav_9", title: "9. İHLAS : HERŞEYİ ALLAH İÇİN YAPMAK DEMEKTİR.", desc: "İbadet ve amellerde gösterişten, riyadan uzak durup, her güzel işi yalnızca ve yalnızca Allah'ın rızasını kazanmak amacıyla gerçekleştirmektir." },
+                { id: "kav_10", title: "10. SÜNNETİ SENİYE: PEYG. EFENDİMİZİN(S.A.V) TÜM İNSANLIĞA ÖRNEK OLAN DAVRANIŞLARI VE GÜZEL AHLAKIDIR.", desc: "Peygamber Efendimiz'in hayat tarzı, sözleri, uygulamaları ve ahlakıdır. Onu örnek almak dinimizi en doğru şekilde yaşamamızı sağlar." },
+                { id: "kav_11", title: "11. HAYIR VE ŞER: İYİLİK VE KÖTÜLÜK DEMEKTİR.", desc: "Hayır; Allah'ın razı olduğu, insana ve çevreye fayda sağlayan güzel işlerdir. Şer ise yasaklanan, zarar veren kötü işlerdir." },
+                { id: "kav_12", title: "12. TEVEKKÜL : ELİMİZDEN GELENİ YAPIP SONUCU ALLAHA BIRAKMAK DEMEKTİR.", desc: "Bir işin gerçekleşmesi için gerekli tüm gayret ve tedbirleri aldıktan sonra, kalben Allah'a güvenmek ve sonucu O'na havale etmektir." }
+            ],
+            hikmet: [
+                { id: "hik_7", title: "7. Nasıl ateş odunu yer bitirirse, dedikodu da salih amelleri yer bitirir.", desc: "Dedikodu ve gıybet, insanın büyük emeklerle kazandığı sevapları ve salih amelleri yok eden, sosyal bağı zedeleyen manevi bir hastalıktır." },
+                { id: "hik_8", title: "8. Bir iğne ustasız olmaz, bir köy muhtarsız olmaz. nasıl koca kainat sahipsiz olur?", desc: "Her sanat eserinin bir sanatçısı, her düzenin bir yöneticisi olduğu gibi; bu muazzam ve kusursuz evrenin de eşsiz bir yaratıcısı ve yöneticisi vardır." },
+                { id: "hik_9", title: "9. ömür sermayesi çok azdır. luzumlu işler ise pek çoktur.", desc: "Dünya hayatı çok kısa ve geçicidir. Ebedi ahiret hayatını kazanmak için yapmamız gereken faydalı ve gerekli ameller ise oldukça fazladır. Zamanı iyi değerlendirmeliyiz." }
+            ],
+            ezberler: [
+                { id: "ezb_kunut", title: "KUNUT-1 VE KUNUT-2 DUALARI", desc: "Namazın vitir rekatında okunan Kunut dualarının tecvitli ve hatasız ezberlenmesi, anlamlarının kavranması." },
+                { id: "ezb_huvallahullezi", title: "HUVALLAHÜLLEZİ (Haşr Suresi Son Ayetleri)", desc: "Yatsı namazlarından sonra ve sabah namazlarından sonra okunan Haşr suresinin son üç ayetinin ezberlenmesi." },
+                { id: "ezb_amenerrasulu", title: "AMENERRASÜLÜ (Bakara Suresi Son İki Ayeti)", desc: "Her gece yatsı namazından sonra okunması tavsiye edilen Bakara suresinin son iki ayetinin ezberlenmesi." },
+                { id: "ezb_ezan", title: "EZAN DUASI", desc: "Ezan okunduktan sonra Peygamber Efendimiz'in şefaatine nail olmak için okunan özel duanın ezberlenmesi." },
+                { id: "ezb_ayatel_kursi", title: "AYATEL KÜRSİ", desc: "Farz namazlardan sonra ve korunma amacıyla okunan, Bakara suresinin 255. ayet-i kerimesinin tecvidli ezberlenmesi." },
+                { id: "ezb_asr", title: "ASR SURESİ", desc: "Zamanın kıymetini, hüsrandan kurtulanların özelliklerini anlatan Asr suresinin ezberi ve meali." },
+                { id: "ezb_namaz_icindeki", title: "NAMAZIN İÇİNDEKİ FARZLAR (Rükünleri)", desc: "<b>Namazın içindeki farzlar 6'dır:</b><br>1. İftitah Tekbiri<br>2. Kıyam<br>3. Kıraat<br>4. Rükû<br>5. Sücûd (Secde)<br>6. Ka'de-i Ahîre (Son oturuş)" },
+                { id: "ezb_namaz_disindaki", title: "NAMAZIN DIŞINDAKİ FARZLAR (Şartları)", desc: "<b>Namazın dışındaki farzlar 6'dır:</b><br>1. Hadesten Taharet<br>2. Necasetten Taharet<br>3. Setr-i Avret<br>4. İstikbal-i Kıble<br>5. Vakit<br>6. Niyet" }
+            ],
+            etkinlik: [
+                { id: "etk_karisik", title: "KARIŞIK HADİS VE E. HÜSNA BİLMECE ETKİNLİĞİ", desc: "Müfredatta geçen 3. Kur hadis-i şerifleri ve Esmaül Hüsna anlamları üzerinden hazırlanan öğretici bilmecelerin çözülmesi." },
+                { id: "etk_kitap_sayfa", title: "ETKİNLİK DİNİMİZİ ÖĞRENİYORUZ KİTABI SAYFA 48, 49, 50 VE 57", desc: "Belirtilen sayfalardaki ahlak, inanç ve ibadet konulu etkinliklerin, bulmacaların doldurularak tamamlanması." }
+            ],
+            kitap: [
+                { id: "kitap_ali_30_40", title: "ALİ'NİN SECCADESİ (Sayfa 30-40)", desc: "Kitabın 30 ile 40. sayfaları arasındaki namaz ve ibadet şuuru hikayelerinin okunup değerlendirilmesi." },
+                { id: "kitap_ali_40_50", title: "ALİ'NİN SECCADESİ (Sayfa 40-50)", desc: "40 ile 50. sayfalar arasındaki ibadet güzelliklerinin mütalaa edilmesi." },
+                { id: "kitap_ali_50_60", title: "ALİ'NİN SECCADESİ (Sayfa 50-60)", desc: "50 ile 60. sayfalar arasındaki kısımların dikkatle okunması." },
+                { id: "kitap_ali_60_80", title: "ALİ'NİN SECCADESİ (Sayfa 60-80)", desc: "60 ile 80. sayfaların okunarak kitap tahlilinin derinleştirilmesi." },
+                { id: "kitap_ali_80_son", title: "ALİ'NİN SECCADESİ (Sayfa 80-SON)", desc: "Kitabın sonuna kadar okunarak namaz yolculuğu serüveninin başarıyla tamamlanması." }
+            ],
+            uygulamali: [
+                { id: "uyg_aksam", title: "UYGULAMALI AKŞAM NAMAZI", desc: "Akşam namazının 3 farz ve 2 sünnetinin, duaları ve rükunlarıyla birlikte uygulamalı olarak kılınması." },
+                { id: "uyg_yatsi", title: "UYGULAMALI YATSI NAMAZI", desc: "Yatsı namazının farz, sünnet ve vitir namazlarının cemaatle veya bireysel olarak tam kurallarına göre ifa edilmesi." }
+            ],
+            degerler: [
+                { id: "deg_ahiret", title: "1. AHİRETİN VARLIK DELİLLERİ", desc: "Öldükten sonra dirilmenin, adaletin tecelli edeceği hesap gününün akli ve nakli delillerle, doğadaki uyanış örnekleriyle anlatılması." },
+                { id: "deg_sunnet", title: "2. SÜNNETE UYMANIN ÖNEMİ (ADETLER NASIL İBADETE DÖNER?)", desc: "Günlük sıradan alışkanlıkların (uyuma, yemek yeme, temizlik vb.) Peygamberimizin sünnetine niyet edilerek nasıl büyük sevaplara dönüştüğünün öğrenilmesi." }
+            ]
+        };
+
+        // LocalStorage Keys updated for 3. Kur to preserve separate scope
+        const STORAGE_STUDENTS_LIST = "3_kur_students_list_v4";
+        const STORAGE_ACTIVE_ID = "3_kur_active_student_id_v4";
+        const STORAGE_PROGRESS_DATA = "3_kur_students_progress_v4";
+        const STORAGE_THEME = "3_kur_theme_v4";
+
+        // Auto Data Migration helper for backward compatibility (Roster recovery from 2. Kur)
+        function autoMigrateData() {
+            const currentDataExist = localStorage.getItem(STORAGE_STUDENTS_LIST);
+            if (!currentDataExist || JSON.parse(currentDataExist).length === 0) {
+                const oldStudents = localStorage.getItem("2_kur_students_list_v4");
+                if (oldStudents) {
+                    try {
+                        const parsed = JSON.parse(oldStudents);
+                        if (parsed && parsed.length > 0) {
+                            // Copy student names but start with fresh 3. Kur progress
+                            localStorage.setItem(STORAGE_STUDENTS_LIST, JSON.stringify(parsed));
+                            const cleanProgress = {};
+                            parsed.forEach(st => {
+                                cleanProgress[st.id] = {};
+                            });
+                            localStorage.setItem(STORAGE_PROGRESS_DATA, JSON.stringify(cleanProgress));
+                        }
+                    } catch(e) {
+                        console.error("Migration error: ", e);
+                    }
+                }
+            }
+        }
+
+        // Run automatic storage migration checks
+        autoMigrateData();
+
+        // Load states from LocalStorage
+        let students = JSON.parse(localStorage.getItem(STORAGE_STUDENTS_LIST)) || [];
+        let activeStudentId = localStorage.getItem(STORAGE_ACTIVE_ID) || "";
+        let progressMap = JSON.parse(localStorage.getItem(STORAGE_PROGRESS_DATA)) || {};
+        let activeTheme = localStorage.getItem(STORAGE_THEME) || "light";
+
+        // Category Collapse States (Always starts collapsed for 3. Kur)
+        let collapsedCategories = {
+            hadis: true,
+            esma: true,
+            kavramlar: true,
+            hikmet: true,
+            ezberler: true,
+            etkinlik: true,
+            kitap: true,
+            uygulamali: true,
+            degerler: true
+        };
+
+        // Window load router
+        window.onload = function() {
+            initTheme();
+            initApp();
+        };
+
+        // Theme functions
+        function initTheme() {
+            applyTheme(activeTheme);
+        }
+
+        function toggleTheme() {
+            activeTheme = activeTheme === "light" ? "dark" : "light";
+            localStorage.setItem(STORAGE_THEME, activeTheme);
+            applyTheme(activeTheme);
+        }
+
+        function applyTheme(theme) {
+            const root = document.documentElement;
+            const icon = document.getElementById("theme-icon");
+            if (theme === "dark") {
+                root.classList.add("dark");
+                if (icon) {
+                    icon.className = "fa-solid fa-sun text-sm text-slate-300";
+                }
+            } else {
+                root.classList.remove("dark");
+                if (icon) {
+                    icon.className = "fa-solid fa-moon text-sm text-teal-600";
+                }
+            }
+        }
+
+        function initApp() {
+            if (activeStudentId && students.find(s => s.id === activeStudentId)) {
+                showDashboard();
+            } else {
+                showStudentSelection();
+            }
+        }
+
+        // Show Student Selection View
+        function showStudentSelection() {
+            document.getElementById('student-view').classList.remove('hidden');
+            document.getElementById('dashboard-view').classList.add('hidden');
+            renderStudentList();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Show Dashboard View
+        function showDashboard() {
+            document.getElementById('student-view').classList.add('hidden');
+            document.getElementById('dashboard-view').classList.remove('hidden');
+            
+            const activeStudent = students.find(s => s.id === activeStudentId);
+            if (activeStudent) {
+                document.getElementById('active-student-display-name').innerText = activeStudent.name;
+                document.getElementById('active-student-avatar').innerText = activeStudent.name.charAt(0).toUpperCase();
+                document.getElementById('footer-student-name').innerText = activeStudent.name;
+            }
+
+            collapseAllCategoriesByDefault();
+            renderCurriculum();
+            calculateProgress();
+            
+            // Auto smooth scroll to curriculum on load
+            setTimeout(() => {
+                document.getElementById('dashboard-view').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        }
+
+        function goToStudentSelection() {
+            activeStudentId = "";
+            localStorage.removeItem(STORAGE_ACTIVE_ID);
+            showStudentSelection();
+        }
+
+        // Create new student without popping up success modals
+        function createNewStudent() {
+            const nameInput = document.getElementById('new-student-name');
+            const name = nameInput.value.trim();
+
+            if (!name) return;
+
+            const newId = "student_" + Date.now();
+            const newStudent = { id: newId, name: name };
+            
+            students.push(newStudent);
+            progressMap[newId] = {};
+
+            localStorage.setItem(STORAGE_STUDENTS_LIST, JSON.stringify(students));
+            localStorage.setItem(STORAGE_PROGRESS_DATA, JSON.stringify(progressMap));
+
+            nameInput.value = "";
+            renderStudentList();
+        }
+
+        // Helper to get stats for a student
+        function getStudentStats(studentId) {
+            const studentProgress = progressMap[studentId] || {};
+            let total = 0;
+            let completed = 0;
+
+            Object.keys(curriculumData).forEach(cat => {
+                curriculumData[cat].forEach(task => {
+                    total++;
+                    if (studentProgress[task.id] === true) {
+                        completed++;
+                    }
+                });
+            });
+
+            return {
+                completed: completed,
+                total: total,
+                percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
+                isFullyCompleted: completed === total && total > 0
+            };
+        }
+
+        // Render Student Cards with green color condition and quoted statistics
+        function renderStudentList() {
+            const listContainer = document.getElementById('student-list');
+            const emptyMsg = document.getElementById('no-students-message');
+            
+            listContainer.innerHTML = '';
+
+            if (students.length === 0) {
+                emptyMsg.classList.remove('hidden');
+                return;
+            } else {
+                emptyMsg.classList.add('hidden');
+            }
+
+            students.forEach(student => {
+                const stats = getStudentStats(student.id);
+                
+                // Color customization for fully completed student card
+                const cardStyle = stats.isFullyCompleted
+                    ? 'bg-emerald-50 border-emerald-200 text-emerald-900 hover:border-emerald-300 dark:bg-emerald-950/20 dark:border-emerald-800 dark:text-emerald-100 dark:hover:border-emerald-700'
+                    : 'bg-white border-sky-100 text-slate-800 hover:border-sky-200 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-100 dark:hover:border-slate-700';
+                
+                const badgeStyle = stats.isFullyCompleted
+                    ? 'bg-emerald-500 text-white border-emerald-600'
+                    : 'bg-teal-50 text-teal-700 border-teal-100 group-hover:bg-teal-600 group-hover:text-white dark:bg-teal-950 dark:text-teal-400 dark:border-teal-900/50';
+                
+                const countColor = stats.isFullyCompleted ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500';
+
+                // Seviyeye göre dinamik renk belirleme (Yüzdelik göstergesi için)
+                let levelStyle = '';
+                if (stats.percentage <= 25) {
+                    levelStyle = 'bg-rose-50 text-rose-600 border-rose-200 dark:bg-rose-950/40 dark:text-rose-400 dark:border-rose-900/50';
+                } else if (stats.percentage <= 50) {
+                    levelStyle = 'bg-amber-50 text-amber-600 border-amber-200 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-900/50';
+                } else if (stats.percentage <= 75) {
+                    levelStyle = 'bg-sky-50 text-sky-600 border-sky-200 dark:bg-sky-950/40 dark:text-sky-400 dark:border-sky-900/50';
+                } else {
+                    levelStyle = 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/50';
+                }
+
+                const studentCard = `
+                    <div class="${cardStyle} border rounded-xl p-3 flex items-center justify-between transition-all cursor-pointer group active:scale-[0.98]" onclick="selectStudent('${student.id}')">
+                        <!-- Sol Taraf: Avatar ve İsim -->
+                        <div class="flex items-center gap-3 min-w-0 flex-1">
+                            <div class="w-9 h-9 rounded-lg border font-extrabold flex items-center justify-center text-sm transition-colors shrink-0 ${badgeStyle}">
+                                ${student.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h3 class="font-bold text-xs md:text-sm transition-colors truncate">
+                                    ${student.name} <span class="font-semibold ${countColor}">"${stats.completed}/${stats.total}"</span>
+                                </h3>
+                            </div>
+                        </div>
+                        
+                        <!-- Sağ Taraf: Seviyeye Göre Renklenen Yüzdelik Rozeti ve Silme Butonu -->
+                        <div class="flex items-center gap-3 shrink-0">
+                            <span class="px-2.5 py-1.5 rounded-xl border text-xs sm:text-sm font-bold shadow-sm transition-all ${levelStyle}">
+                                %${stats.percentage}
+                            </span>
+                            <button onclick="confirmDeleteStudent('${student.id}', event)" class="w-8 h-8 rounded-full bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 dark:bg-slate-800 dark:hover:bg-red-950/50 dark:text-slate-500 dark:hover:text-red-400 flex items-center justify-center transition-all shrink-0 active:scale-90" title="Sil">
+                                <i class="fa-solid fa-trash-can text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                listContainer.insertAdjacentHTML('beforeend', studentCard);
+            });
+        }
+
+        function selectStudent(id) {
+            activeStudentId = id;
+            localStorage.setItem(STORAGE_ACTIVE_ID, id);
+            showDashboard();
+        }
+
+        let deleteTargetId = "";
+        function confirmDeleteStudent(studentId, event) {
+            event.stopPropagation();
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+
+            deleteTargetId = studentId;
+            showConfirmModal(
+                "Sil",
+                `"${student.name}" isimli öğrenciyi silmek istediğinize emin misiniz?`,
+                function() {
+                    students = students.filter(s => s.id !== deleteTargetId);
+                    delete progressMap[deleteTargetId];
+
+                    localStorage.setItem(STORAGE_STUDENTS_LIST, JSON.stringify(students));
+                    localStorage.setItem(STORAGE_PROGRESS_DATA, JSON.stringify(progressMap));
+
+                    if (activeStudentId === deleteTargetId) {
+                        activeStudentId = "";
+                        localStorage.removeItem(STORAGE_ACTIVE_ID);
+                    }
+
+                    renderStudentList();
+                    initApp();
+                }
+            );
+        }
+
+        function collapseAllCategoriesByDefault() {
+            const categories = Object.keys(curriculumData);
+            categories.forEach(cat => {
+                collapsedCategories[cat] = true;
+                const container = document.getElementById(`container-${cat}`);
+                const chevron = document.getElementById(`chevron-${cat}`);
+                if (container) {
+                    container.classList.add('hidden');
+                }
+                if (chevron) {
+                    chevron.className = "fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300 rotate-0";
+                }
+            });
+        }
+
+        // Render Curriculum (Using Uniform Turquoise Style)
+        function renderCurriculum() {
+            const categories = Object.keys(curriculumData);
+            const activeStudentProgress = progressMap[activeStudentId] || {};
+            
+            categories.forEach(cat => {
+                const listContainer = document.getElementById(`${cat}-list`);
+                if (!listContainer) return;
+                
+                listContainer.innerHTML = '';
+                
+                curriculumData[cat].forEach(item => {
+                    const isChecked = activeStudentProgress[item.id] || false;
+                    
+                    let checkColorClass = 'text-teal-600 focus:ring-teal-500 dark:text-teal-500';
+                    let cardBorderLeft = 'border-l-4 border-l-teal-400';
+
+                    const itemHTML = `
+                        <div class="bg-white dark:bg-slate-900/50 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 rounded-lg p-2.5 border border-sky-100/60 dark:border-slate-800 transition-all shadow-sm ${cardBorderLeft}">
+                            <div class="flex items-start justify-between gap-2">
+                                <!-- Sol taraf: Detay açma tıklama alanı -->
+                                <div class="flex items-start gap-2 cursor-pointer flex-1 select-none py-1 active:opacity-75" onclick="toggleDetails('${item.id}')">
+                                    <div class="mt-1 text-[8px] text-teal-400 dark:text-teal-500 transition-transform duration-200 id-arrow-${item.id} shrink-0">
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <h4 class="font-semibold text-slate-700 dark:text-slate-300 text-xs hover:text-teal-600 dark:hover:text-teal-400 transition-colors break-words ${isChecked ? 'line-through text-slate-400 dark:text-slate-600' : ''}" id="title-${item.id}">
+                                            ${item.title}
+                                        </h4>
+                                    </div>
+                                </div>
+                                
+                                <!-- Sağ taraf: Bağımsız check butonu -->
+                                <div class="flex items-center justify-center p-1" onclick="event.stopPropagation()">
+                                    <input type="checkbox" id="check-${item.id}" 
+                                        ${isChecked ? 'checked' : ''} 
+                                        onchange="toggleTask('${item.id}', event)"
+                                        class="w-5 h-5 rounded border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 ${checkColorClass} transition-all cursor-pointer focus:ring-offset-0 focus:ring-1">
+                                </div>
+                            </div>
+                            
+                            <!-- Gizli detay sürgüsü -->
+                            <div id="details-${item.id}" class="hidden mt-2 pt-2 border-t border-sky-50 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed bg-sky-50/20 dark:bg-slate-950/20 p-2.5 rounded-lg">
+                                ${item.desc}
+                            </div>
+                        </div>
+                    `;
+                    listContainer.insertAdjacentHTML('beforeend', itemHTML);
+                });
+            });
+        }
+
+        function toggleTask(id, event) {
+            if (!activeStudentId) return;
+
+            if (!progressMap[activeStudentId]) {
+                progressMap[activeStudentId] = {};
+            }
+
+            progressMap[activeStudentId][id] = event.target.checked;
+            localStorage.setItem(STORAGE_PROGRESS_DATA, JSON.stringify(progressMap));
+            
+            const titleEl = document.getElementById(`title-${id}`);
+            if (titleEl) {
+                if (event.target.checked) {
+                    titleEl.classList.add('line-through', 'text-slate-400', 'dark:text-slate-600');
+                } else {
+                    titleEl.classList.remove('line-through', 'text-slate-400', 'dark:text-slate-600');
+                }
+            }
+            
+            calculateProgress();
+        }
+
+        function toggleDetails(id) {
+            const detailEl = document.getElementById(`details-${id}`);
+            const arrowEl = document.querySelector(`.id-arrow-${id}`);
+            
+            if (detailEl) {
+                const isHidden = detailEl.classList.contains('hidden');
+                if (isHidden) {
+                    detailEl.classList.remove('hidden');
+                    if (arrowEl) arrowEl.classList.add('rotate-90');
+                } else {
+                    detailEl.classList.add('hidden');
+                    if (arrowEl) arrowEl.classList.remove('rotate-90');
+                }
+            }
+        }
+
+        function toggleCategory(cat) {
+            const container = document.getElementById(`container-${cat}`);
+            const chevron = document.getElementById(`chevron-${cat}`);
+            
+            if (container) {
+                const isCollapsed = container.classList.contains('hidden');
+                if (isCollapsed) {
+                    container.classList.remove('hidden');
+                    if (chevron) {
+                        chevron.className = "fa-solid fa-chevron-up text-teal-600 dark:text-teal-400 text-[10px] transition-transform duration-300 rotate-180";
+                    }
+                    collapsedCategories[cat] = false;
+                } else {
+                    container.classList.add('hidden');
+                    if (chevron) {
+                        chevron.className = "fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300 rotate-0";
+                    }
+                    collapsedCategories[cat] = true;
+                }
+            }
+        }
+
+        // Calculate progress percentage and trigger celebration at 100%
+        function calculateProgress() {
+            if (!activeStudentId) return;
+
+            let totalTasks = 0;
+            let completedTasks = 0;
+            const activeStudentProgress = progressMap[activeStudentId] || {};
+
+            const categories = Object.keys(curriculumData);
+            
+            categories.forEach(cat => {
+                const catTasks = curriculumData[cat];
+                const catTotal = catTasks.length;
+                let catCompleted = 0;
+
+                catTasks.forEach(task => {
+                    totalTasks++;
+                    if (activeStudentProgress[task.id] === true) {
+                        completedTasks++;
+                        catCompleted++;
+                    }
+                });
+
+                // Update category percentage badge
+                const catPercentage = catTotal > 0 ? Math.round((catCompleted / catTotal) * 100) : 0;
+                const catPercentEl = document.getElementById(`progress-${cat}`);
+                if (catPercentEl) {
+                    catPercentEl.textContent = `${catPercentage}%`;
+                }
+            });
+
+            const overallPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            const overallPercentEl = document.getElementById('overall-percentage');
+            const overallBarEl = document.getElementById('overall-progress-bar');
+            const completedCountEl = document.getElementById('completed-count');
+
+            if (overallPercentEl) overallPercentEl.textContent = `${overallPercentage}%`;
+            if (overallBarEl) overallBarEl.style.width = `${overallPercentage}%`;
+            if (completedCountEl) completedCountEl.textContent = `${completedTasks} / ${totalTasks}`;
+
+            // Eğer %100 tamamlandıysa başarı penceresini ve alttan fırlayan konfetiyi tetikle
+            if (overallPercentage === 100 && totalTasks > 0) {
+                const celebrationSessionKey = `celebrated_100_${activeStudentId}`;
+                if (!sessionStorage.getItem(celebrationSessionKey)) {
+                    triggerClassyCelebration();
+                    sessionStorage.setItem(celebrationSessionKey, 'true');
+                }
+            }
+        }
+
+        // CLOSE SUCCESS BANNER
+        function closeSuccessBanner() {
+            const banner = document.getElementById('success-banner');
+            if (banner) {
+                banner.classList.add('hidden');
+                banner.classList.remove('flex');
+            }
+        }
+
+        // GÖZ YORMAYAN, ALTTAN YUKARI DOĞRU SÜZÜLEN MİNİ KONFETİ VE BAŞARI SİSTEMİ
+        function triggerClassyCelebration() {
+            // "Başarı ile bitirdiniz" bannerını göster
+            const banner = document.getElementById('success-banner');
+            if (banner) {
+                banner.classList.remove('hidden');
+                banner.classList.add('flex');
+            }
+
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            let animationFrameId;
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const colors = ['#2dd4bf', '#14b8a6', '#0d9488', '#38bdf8', '#0ea5e9', '#0284c7', '#34d399', '#059669'];
+            const confettis = [];
+            const particleCount = 100; // Mini bir konfeti için sınırlı sayı
+
+            class ConfettiParticle {
+                constructor(side) {
+                    // Sol veya sağ alt köşeden fırlatma başlat
+                    if (side === 'left') {
+                        this.x = 0;
+                        this.vx = Math.random() * 8 + 4; // Sağa doğru
+                    } else {
+                        this.x = canvas.width;
+                        this.vx = -(Math.random() * 8 + 4); // Sola doğru
+                    }
+                    this.y = canvas.height;
+                    this.vy = -(Math.random() * 14 + 10); // Yukarı fırlatma hızı
+                    this.r = Math.random() * 5 + 3; // Parçacık boyutu (orta büyüklükte)
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                    this.gravity = 0.35; // Yerçekimi ivmesi
+                    this.alpha = 1;
+                    this.decay = Math.random() * 0.015 + 0.005; // Yavaşça gözden kaybolma
+                    this.rotation = Math.random() * 360;
+                    this.rotationSpeed = Math.random() * 6 - 3;
+                }
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate((this.rotation * Math.PI) / 180);
+                    ctx.globalAlpha = this.alpha;
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(-this.r / 2, -this.r / 2, this.r, this.r);
+                    ctx.restore();
+                }
+                update() {
+                    this.vy += this.gravity; // Yerçekimi ekle
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.rotation += this.rotationSpeed;
+                    this.alpha -= this.decay;
+                }
+            }
+
+            // Sol ve sağdan fırlayacak konfeti parçalarını diziye ekle
+            for (let i = 0; i < particleCount / 2; i++) {
+                confettis.push(new ConfettiParticle('left'));
+                confettis.push(new ConfettiParticle('right'));
+            }
+
+            function animationLoop() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = 0;
+
+                confettis.forEach(p => {
+                    p.update();
+                    p.draw();
+                    if (p.alpha > 0 && p.y < canvas.height && p.x >= 0 && p.x <= canvas.width) {
+                        alive++;
+                    }
+                });
+
+                if (alive > 0) {
+                    animationFrameId = requestAnimationFrame(animationLoop);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    cancelAnimationFrame(animationFrameId);
+                }
+            }
+
+            animationLoop();
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+
+        // Backup (Export) Function
+        function exportData() {
+            const dataToExport = {
+                students: students,
+                progressMap: progressMap
+            };
+            const jsonString = btoa(unescape(encodeURIComponent(JSON.stringify(dataToExport))));
+            
+            // Panoya kopyala
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = jsonString;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            showConfirmModal("Yedek Kopyalandı", "Tüm öğrenci ve görev verileriniz güvenli bir kod olarak panoya kopyalandı! Bu kodu saklayarak dilediğiniz zaman yükleyebilirsiniz.", null, true);
+        }
+
+        // Import (Restore) Functions
+        function openImportModal() {
+            document.getElementById('transfer-text-area').value = "";
+            document.getElementById('transfer-modal').classList.remove('hidden');
+            document.getElementById('transfer-modal').classList.add('flex');
+            
+            const actionBtn = document.getElementById('transfer-action-btn');
+            actionBtn.onclick = function() {
+                const rawInput = document.getElementById('transfer-text-area').value.trim();
+                if (!rawInput) return;
+
+                try {
+                    const decrypted = decodeURIComponent(escape(atob(rawInput)));
+                    const parsed = JSON.parse(decrypted);
+
+                    if (parsed && parsed.students && parsed.progressMap) {
+                        students = parsed.students;
+                        progressMap = parsed.progressMap;
+
+                        localStorage.setItem(STORAGE_STUDENTS_LIST, JSON.stringify(students));
+                        localStorage.setItem(STORAGE_PROGRESS_DATA, JSON.stringify(progressMap));
+
+                        closeTransferModal();
+                        renderStudentList();
+                        showConfirmModal("Yükleme Başarılı", "Tüm yedek verileriniz başarıyla tarayıcıya aktarıldı.", function() {
+                            initApp();
+                        }, true);
+                    } else {
+                        showConfirmModal("Hata", "Geçersiz yedekleme kodu girdiniz. Lütfen kodu kontrol edin.", null, true);
+                    }
+                } catch(e) {
+                    showConfirmModal("Hata", "Yedekleme kodu çözümlenemedi. Eksik veya bozuk yapıştırmış olabilirsiniz.", null, true);
+                }
+            };
+        }
+
+        function closeTransferModal() {
+            document.getElementById('transfer-modal').classList.add('hidden');
+            document.getElementById('transfer-modal').classList.remove('flex');
+        }
+
+        let confirmCallback = null;
+        function showConfirmModal(title, text, onConfirm, isAlertMode = false) {
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-text').innerText = text;
+            
+            const yesBtn = document.getElementById('confirm-yes-btn');
+            
+            if (isAlertMode) {
+                yesBtn.innerText = "Tamam";
+                yesBtn.className = "flex-1 bg-teal-600 hover:bg-teal-500 text-white font-semibold py-2 rounded-lg transition-all text-xs active:scale-95";
+                // İptal butonunu saklayalım
+                document.querySelector('#confirm-modal button[onclick="closeConfirmModal()"]').classList.add('hidden');
+            } else {
+                yesBtn.innerText = "Sil";
+                yesBtn.className = "flex-1 bg-red-600 hover:bg-red-500 text-white font-semibold py-2 rounded-lg transition-all text-xs active:scale-95";
+                document.querySelector('#confirm-modal button[onclick="closeConfirmModal()"]').classList.remove('hidden');
+            }
+
+            document.getElementById('confirm-modal').classList.remove('hidden');
+            document.getElementById('confirm-modal').classList.add('flex');
+            confirmCallback = onConfirm;
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            document.getElementById('confirm-modal').classList.remove('flex');
+            confirmCallback = null;
+        }
+
+        document.getElementById('confirm-yes-btn').addEventListener('click', () => {
+            if (confirmCallback) {
+                confirmCallback();
+            }
+            closeConfirmModal();
+        });
+    </script>
+</body>
+</html>
