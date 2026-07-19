@@ -59,11 +59,6 @@
     <div id="student-view" class="max-w-md mx-auto px-4 py-12 md:py-20">
         <div class="text-center mb-8">
             <h1 class="text-2xl font-bold tracking-tight text-teal-900 dark:text-teal-400">3. Kur Öğrenci Girişi</h1>
-            <!-- Migration Success Notification Badge -->
-            <div id="migration-alert" class="hidden mt-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 text-emerald-800 dark:text-emerald-300 rounded-xl p-3 text-xs text-center flex items-center justify-center gap-2">
-                <i class="fa-solid fa-circle-check text-emerald-600 dark:text-emerald-400"></i>
-                <span>2. Kur'daki öğrencileriniz başarıyla 3. Kur'a aktarıldı!</span>
-            </div>
         </div>
 
         <!-- Add Student Card -->
@@ -445,40 +440,6 @@
         const STORAGE_ACTIVE_ID = "3_kur_active_student_id_v4";
         const STORAGE_PROGRESS_DATA = "3_kur_students_progress_v4";
         const STORAGE_THEME = "3_kur_theme_v4";
-
-        // Auto Data Migration helper for backward compatibility (Roster recovery from 2. Kur)
-        function autoMigrateData() {
-            const currentDataExist = localStorage.getItem(STORAGE_STUDENTS_LIST);
-            if (!currentDataExist || JSON.parse(currentDataExist).length === 0) {
-                // Try importing from 2. Kur (V4 key)
-                const oldStudents = localStorage.getItem("2_kur_students_list_v4");
-                if (oldStudents) {
-                    try {
-                        const parsed = JSON.parse(oldStudents);
-                        if (parsed && parsed.length > 0) {
-                            // Copy student names but start with fresh 3. Kur progress
-                            localStorage.setItem(STORAGE_STUDENTS_LIST, JSON.stringify(parsed));
-                            const cleanProgress = {};
-                            parsed.forEach(st => {
-                                cleanProgress[st.id] = {};
-                            });
-                            localStorage.setItem(STORAGE_PROGRESS_DATA, JSON.stringify(cleanProgress));
-                            
-                            // Show migration notification
-                            setTimeout(() => {
-                                const alertBox = document.getElementById("migration-alert");
-                                if (alertBox) alertBox.classList.remove("hidden");
-                            }, 300);
-                        }
-                    } catch(e) {
-                        console.error("Migration error: ", e);
-                    }
-                }
-            }
-        }
-
-        // Run automatic storage migration checks
-        autoMigrateData();
 
         // Load states from LocalStorage
         let students = JSON.parse(localStorage.getItem(STORAGE_STUDENTS_LIST)) || [];
