@@ -79,7 +79,12 @@
 
         <!-- Student List -->
         <div>
-            <h2 class="text-xs font-bold text-teal-800 dark:text-teal-400 uppercase tracking-wider mb-3 pl-1">Öğrenciler</h2>
+            <div class="flex items-center justify-between mb-3 pl-1">
+                <h2 class="text-xs font-bold text-teal-800 dark:text-teal-400 uppercase tracking-wider">Öğrenciler</h2>
+                <span class="text-[10px] text-teal-600 dark:text-teal-400/70 font-medium bg-teal-50 dark:bg-teal-950/40 px-2.5 py-1 rounded-full border border-teal-100 dark:border-teal-900/50 flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-down-wide-short"></i> Görev Sayısına Göre Sıralı
+                </span>
+            </div>
             <div id="student-list" class="flex flex-col gap-3">
                 <!-- Students dynamically listed here -->
             </div>
@@ -376,10 +381,10 @@
                 { id: "ezb_meddi_tabii", title: "MEDDİ TABİİ, MUTTASIL, MUNFASIL", desc: "Tecvid ilminde uzatma (med) çeşitlerinden meddi tabii, meddi muttasil ve meddi munfasıl kurallarının ve örneklerinin kavranması." },
                 { id: "ezb_meddi_ariz", title: "MEDDİ ARİZ, MEDDİ LAZIM", desc: "Durak sebebiyle meydana gelen meddi ariz ile harf veya kelimede zorunlu uzatma olan meddi lazım tecvid kurallarının öğrenilmesi." },
                 { id: "ezb_meddi_lin", title: "MEDDİ LİN, İKLAB", desc: "Yumuşak okuyuş sağlayan meddi lin kuralı ile nun-ı sakin veya tenvinden sonra be harfi geldiğinde çevirme kuralı olan iklab tecvidi." },
-                { id: "ezb_osmanlica_hikaye", title: "OSMANLICA OKUMA HİKAYE  1, 2(TIKANDI BABA VE PADİŞAHININ İŞİ NE?)", desc: "TIKANDI BABA VE PADİŞAHIN İŞİ NE" },
+                { id: "ezb_osmanlica_hikaye", title: "OSMANLICA OKUMA HİKAYE 1, 2", desc: "Osmanlı Türkçesi matbu metin okuma pratiklerinden 1 ve 2 numaralı hikayelerin akıcı bir şekilde okunması." },
                 { id: "ezb_ye_okutucusu", title: "YE OKUTUCUSU VE ÖRNEKLERİ", desc: "Osmanlıca harf öğretiminde 'I / İ' seslerini veren Ye okutucu harfinin kuralı ve buna ait örnek kelimelerin okunması." },
                 { id: "ezb_vav_okutucusu", title: "VAV OKUTUCUSU VE ÖRNEKLERİ", desc: "Osmanlıca harf öğretiminde 'O / Ö / U / Ü' seslerini veren Vav okutucu harfinin kullanımı ve kelime alıştırmaları." },
-                { id: "ezb_osm_eski_metin", title: "OSM. ESKİ METİN OKUMA(HEM MADEM...)", desc: "HEM MADEM" }
+                { id: "ezb_osm_eski_metin", title: "OSM. ESKİ METİN OKUMA", desc: "Osmanlı Türkçesi el yazması veya matbu eski metin parçalarının okuma ve çözümleme alıştırması." }
             ],
             kitap: [
                 { id: "kitap_zekasi_11_21", title: "OKUMA ZEKASI (S. YAYLAMAZ) 11-21", desc: "S. Yaylamaz'ın 'Okuma Zekası' kitabının 11-21. sayfalarının okunması ve mütalaa edilmesi." },
@@ -550,7 +555,17 @@
                 emptyMsg.classList.add('hidden');
             }
 
-            students.forEach(student => {
+            // Sort students descending by completed task count, then alphabetically by name
+            const sortedStudents = [...students].sort((a, b) => {
+                const statsA = getStudentStats(a.id);
+                const statsB = getStudentStats(b.id);
+                if (statsB.completed !== statsA.completed) {
+                    return statsB.completed - statsA.completed;
+                }
+                return a.name.localeCompare(b.name, 'tr');
+            });
+
+            sortedStudents.forEach((student, index) => {
                 const stats = getStudentStats(student.id);
                 
                 const cardStyle = stats.isFullyCompleted
@@ -574,9 +589,22 @@
                     levelStyle = 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/50';
                 }
 
+                // Rank badge styling (1st, 2nd, 3rd, and rank numbers)
+                let rankBadge = '';
+                if (index === 0 && stats.completed > 0) {
+                    rankBadge = `<span class="text-[11px] bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shrink-0 border border-amber-200 dark:border-amber-800 shadow-sm" title="1. Sıra"><i class="fa-solid fa-trophy text-amber-500 text-[10px]"></i> 1.</span>`;
+                } else if (index === 1 && stats.completed > 0) {
+                    rankBadge = `<span class="text-[11px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shrink-0 border border-slate-200 dark:border-slate-700 shadow-sm" title="2. Sıra"><i class="fa-solid fa-medal text-slate-400 text-[10px]"></i> 2.</span>`;
+                } else if (index === 2 && stats.completed > 0) {
+                    rankBadge = `<span class="text-[11px] bg-amber-900/10 dark:bg-amber-950/40 text-amber-800 dark:text-amber-400 font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shrink-0 border border-amber-800/20 dark:border-amber-900/40 shadow-sm" title="3. Sıra"><i class="fa-solid fa-award text-amber-700 dark:text-amber-500 text-[10px]"></i> 3.</span>`;
+                } else {
+                    rankBadge = `<span class="text-[10px] text-slate-400 dark:text-slate-500 font-bold px-1.5 py-0.5 rounded bg-slate-50 dark:bg-slate-800/50 shrink-0">#${index + 1}</span>`;
+                }
+
                 const studentCard = `
                     <div class="${cardStyle} border rounded-xl p-3 flex items-center justify-between transition-all cursor-pointer group active:scale-[0.98]" onclick="selectStudent('${student.id}')">
-                        <div class="flex items-center gap-3 min-w-0 flex-1">
+                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                            ${rankBadge}
                             <div class="w-9 h-9 rounded-lg border font-extrabold flex items-center justify-center text-sm transition-colors shrink-0 ${badgeStyle}">
                                 ${student.name.charAt(0).toUpperCase()}
                             </div>
