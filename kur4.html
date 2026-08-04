@@ -79,7 +79,12 @@
 
         <!-- Student List -->
         <div>
-            <h2 class="text-xs font-bold text-teal-800 dark:text-teal-400 uppercase tracking-wider mb-3 pl-1">Öğrenciler</h2>
+            <div class="flex items-center justify-between mb-3 pl-1">
+                <h2 class="text-xs font-bold text-teal-800 dark:text-teal-400 uppercase tracking-wider">Öğrenciler</h2>
+                <span class="text-[10px] text-teal-600 dark:text-teal-400/70 font-medium bg-teal-50 dark:bg-teal-950/40 px-2.5 py-1 rounded-full border border-teal-100 dark:border-teal-900/50 flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-down-wide-short"></i> Görev Sayısına Göre Sıralı
+                </span>
+            </div>
             <div id="student-list" class="flex flex-col gap-3">
                 <!-- Students dynamically listed here -->
             </div>
@@ -149,7 +154,7 @@
         <main class="max-w-4xl mx-auto px-4 mt-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                 
-                <!-- Left Column (HADİS, ESMA, KAVRAMLAR, HİKMETLİ SÖZLER) -->
+                <!-- Left Column (HADİS, ESMA, KAVRAMLAR, HİKMETLİ SÖZLER, DEĞERLER EĞİTİMİ) -->
                 <div class="flex flex-col gap-4">
                     <!-- Category 1: HADİSİ ŞERİFLER -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
@@ -249,7 +254,7 @@
 
                 <!-- Right Column (EZBERLER, ETKİNLİK, KİTAP, UYGULAMALI / SINAV ADAB) -->
                 <div class="flex flex-col gap-4">
-                    <!-- Category 6: 1. KUR EZBERLERİ -->
+                    <!-- Category 6: 4. KUR EZBERLERİ -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
                             <div onclick="toggleCategory('ezberler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
@@ -380,59 +385,57 @@
 
     <!-- Javascript Logic -->
     <script>
-        // Curriculum Database for 4. Kur exactly matching provided image
+        // Curriculum Database for 4. Kur
         const curriculumData = {
             hadis: [
-                { id: "hadis_16", title: "16. HER YAPILAN İYİLİK SADAKADIR.", desc: "İslam'da sadaka sadece maddi yardım değildir. İnsanlara tebessüm etmek, güzel söz söylemek, yol göstermek ve her türlü hayırlı iş de sadakadır." },
-                { id: "hadis_17", title: "17. ZİKRİN EN FAZİLETLİSİ LA İLAHEİLLALLAHTIR.", desc: "Tevhit kelimesi olan 'Lâ ilâhe illallâh', zikirlerin en üstünüdür. Kalbi temizleyen, imanı tazeleyen ve insanı Allah'a yaklaştıran en kıymetli kelimedir." },
-                { id: "hadis_18", title: "18. ZARAR VERMEK, ZARARA ZARARLA KARŞILIK VERMEK YOKTUR.", desc: "İslam dininde ne başkasına zarar vermek ne de görülen bir zarara aynı şekilde haksızlıkla karşılık vermek caizdir; aslolan adalet ve ıslahtır." },
-                { id: "hadis_19", title: "19. HİÇ BİRİNİZ KENDİSİ İÇİN İSTEDİĞİNİ MÜMİN KARDEŞİ İÇİN DE İSTEMEDİKÇE GERÇEK İMAN ETMİŞ OLMAZ.", desc: "Müminler birbirlerinin iyiliğini, başarısını ve mutluluğunu kendi nefsi gibi istemeli; empati ve din kardeşliği şuurunu en üst düzeyde tutmalıdır." },
-                { id: "hadis_20", title: "20. İŞÇİYE ÜCRETİNİ TERİ ALNININ TERİ KURUMADAN VERİNİZ.", desc: "Kul hakkına ve insan emeğine verilen değerin en açık göstergesidir. Çalışanın hakkı zamanında, geciktirilmeden ve eksiksiz ödenmelidir." }
+                { id: "hadis_16", title: "16. HER YAPILAN İYİLİK SADAKADIR.", desc: "İslam'da sadaka sadece maddi yardım değildir. İnsanlara tebessüm etmek, güzel söz söylemek, yol göstermek ve faydalı her iş bir sadakadır." },
+                { id: "hadis_17", title: "17. İNSANLARA MERHAMET ETMEYENE ALLAH DA MERHAMET ETMEZ.", desc: "Mahlukata ve insanlara merhametle yaklaşmak Allah'ın merhametine erişmenin temel şartıdır." },
+                { id: "hadis_18", title: "18. DUA MÜMİNİN SİLAHIDIR.", desc: "Dua, müminin karşılaştığı zorluklarda ve sıkıntılarda sığınabileceği en güçlü manevi destektir." },
+                { id: "hadis_19", title: "19. İSRAF EDENLER ŞEYTANLARIN KARDEŞLERİDİR.", desc: "Zamanı, sağlığı, malı ve imkanları gereksiz yere harcamak israftır ve dinimizde men edilmiştir." },
+                { id: "hadis_20", title: "20. TEMİZLİK İMANIN YARISIDIR.", desc: "Hem beden hem kalp hem de çevre temizliği müminin imanı ve ibadet hayatı için temel bir dayanaktır." }
             ],
             esma: [
-                { id: "esma_10", title: "10- EL-MELİK: HERŞEYİN SAHİBİ OLAN ALLAH.", desc: "Mülkün, göklerin, yerin ve bütün kainatın tek mutlak sahibi; emir ve yasak koyma yetkisine tek başına sahip olan yüce yaratıcı." },
-                { id: "esma_11", title: "11- EL-ALİM: HERŞEYİ BİLEN ALLAH.", desc: "Olmuş ve olacak, gizli ve açık, kalplerden ve zihinlerden geçen her şeyi eksiksiz, mükemmel ve ezeli ilmiyle bilen." },
-                { id: "esma_12", title: "12- EL-GAFUR: ÇOKÇA AFFEDEN ALLAH.", desc: "Kullarının günahlarını örten, bağışlaması, mağfireti ve merhameti sonsuz olan; içtenlikle yapılan tövbeleri kabul eden." }
+                { id: "esma_el_mumin", title: "EL-MÜ'MİN", desc: "Güven veren, emniyete kavuşturan, müminleri koruyan ve vaadine sadık olan Yüce Allah." },
+                { id: "esma_el_muheymin", title: "EL-MÜHEYMİN", desc: "Gözeten, koruyan, her şeyi hükmü altına alan ve denetleyen." },
+                { id: "esma_el_aziz", title: "EL-AZİZ", desc: "İzzet sahibi, mutlak galip gelen, mağlup edilmesi imkansız olan." },
+                { id: "esma_el_cebbar", title: "EL-CEBBAR", desc: "Dilediğini zorla yaptıran, eksikleri tamamlayan ve kırılanları onaran." },
+                { id: "esma_el_mutekebbir", title: "EL-MÜTEKEBBİR", desc: "Büyüklükte eşi ve benzeri olmayan, büyüklük hakkı sadece kendisine ait olan." }
             ],
             kavramlar: [
-                { id: "kav_13", title: "13. İSTİŞARE: DANIŞMAK, FİKİR ALIŞ VERİŞİNDE BULUNMAK DEMEKTİR.", desc: "Önemli kararlar alırken bilgili, tecrübeli ve güvenilir kişilerin görüşlerine başvurmak demektir. Peygamberimizin en önemli sünnetlerindendir." },
-                { id: "kav_14", title: "14. HİLM: YUMUŞAK HUYLULUK DEMEKTİR.", desc: "Öfkeyi kontrol etmek, insanlara karşı nazik, anlayışlı, sabırlı ve bağışlayıcı davranma erdemidir." },
-                { id: "kav_15", title: "15. HIFZI LİSAN: DİLİ GEREKSİZ ŞEYLERDEN KORUMAK DEMEKTİR.", desc: "Dili yalan, gıybet, dedikodu, kötü söz ve gereksiz konuşmalardan koruyarak ya hayır konuşmak ya da susmaktır." },
-                { id: "kav_16", title: "16. İFFET: NAMUSLU, ŞEREFLİ VE AHLAKLI OLMAK DEMEKTİR.", desc: "Nefsi haramlardan, kötü arzulardan ve çirkin davranışlardan korumak; edep, hayasızlık ve ahlaksızlıktan sakınarak şerefli yaşamaktır." }
+                { id: "kav_13", title: "13. HÜSN-İ ZAN: BAŞKALARI HAKKINDA GÜZEL DÜŞÜNMEK", desc: "İnsanlar hakkında ön yargısız olmak, iyi niyetli ve olumlu düşünmektir." },
+                { id: "kav_14", title: "14. SU-İ ZAN: KÖTÜ ZANDA BULUNMAK", desc: "Başkaları hakkında delilsiz ve yersiz yere kötü düşünmek, şüpheyle bakmaktır." },
+                { id: "kav_15", title: "15. GIYBET: BİRİNİN ARKASINDAN HOŞLANMAYACAĞI ŞEYLERİ KONUŞMAK", desc: "Kişinin arkasından, duyduğunda üzüleceği doğru hususları bile konuşmaktır." },
+                { id: "kav_16", title: "16. İFTİRA: BİR KİŞİYE İŞLEMEYECEĞİ VEYA YAPMADIĞI ŞEYİ YÜKLEMEK", desc: "Bir insana yapmadığı çirkin bir davranışı veya suçu yalan olarak isnad etmektir." }
             ],
             hikmet: [
-                { id: "hik_10", title: "10. ASLAN YATTIĞI YERDEN BELLİ OLUR.", desc: "İnsanın tertibi, düzeni, kişiliği ve ahlakı yaşadığı, çalıştığı veya bulunduğu ortamın temizliğinden ve intizamından anlaşılır." },
-                { id: "hik_11", title: "11. DANIŞAN DAĞLAR AŞAR, DANIŞMAYAN YOLDA ŞAŞAR.", desc: "İstişare eden ve başkalarının tecrübelerinden faydalanan insan büyük engelleri aşar; kendi fikrine takılıp danışmayan ise en basit yolda hataya düşer." },
-                { id: "hik_12", title: "12. GÜLME KOMŞUNA GELİR BAŞINA.", desc: "Başkalarının yaşadığı sıkıntı, kaza veya olumsuzluklarla alay edilmemelidir; insan benzer bir imtihanla kendisi de karşılaşabilir." },
-                { id: "hik_13", title: "13. YAZIN BAŞI PİŞENİN KIŞIN AŞI PİŞER.", desc: "Gençliğinde ve zamanında emek verip çalışan, zorluklara göğüs geren kimse, gelecekte bunun bereketini ve rahatlığını görür." }
-            ],
-            ezberler: [
-                { id: "ezb_elif_lam_mim", title: "ELİF LAM MİM (Bakara Suresi İlk Ayetleri)", desc: "Bakara Suresinin ilk 5 ayetinin (Elif Lâm Mîm) tecvid kurallarına uygun, hatasız ve akıcı ezberlenmesi." },
-                { id: "ezb_kadir", title: "KADİR SURESİ", desc: "Kadir gecesinin feyzini ve Kur'an-ı Kerim'in indirilişini anlatan Kadir Suresinin tecvidli ezberi ve meali." },
-                { id: "ezb_salaten_tuncina", title: "SALATEN TÜNCİNA (Salât-ı Münciye)", desc: "Sıkıntılardan ve belalardan korunmak, duaların kabulü için okunan Salaten Tuncina duasının doğru ezberlenmesi." },
-                { id: "ezb_caminin_bolumleri", title: "CAMİNİN BÖLÜMLERİ", desc: "Mihrap, minber, kürsü, minare, şadırvan, kubbe, mahfil, son cemaat yeri gibi caminin temel mimari yapılarının öğrenilmesi." },
-                { id: "ezb_elif_okutucusu", title: "ELİF OKUTUCUSU VE ÖRNEKLERİ", desc: "Elifba/Osmanlıca öğretiminde Elif uzatma okutucu harfinin kuralı ve buna ait kelime örnekleri." },
-                { id: "ezb_he_okutucusu", title: "HE OKUTUCUSU VE ÖRNEKLERİ", desc: "Elifba/Osmanlıca öğretiminde He okutucu harfinin fonksiyonu ve buna ait kelime alıştırmaları." },
-                { id: "ezb_namazi_bozanlar", title: "NAMAZI BOZAN DURUMLAR", desc: "Namaz kılınırken yapıldığında namazı geçersiz kılan (konuşmak, abdestin bozulması, kıbleden dönmek, gülmek vb.) durumlar." }
-            ],
-            etkinlik: [
-                { id: "etk_hadis_kavram", title: "KARIŞIK HADİS VE KAVRAMLAR", desc: "4. Kur müfredatındaki Hadis-i Şerifler ve Kavramlar konularını pekiştirici karma bilmece ve soru-cevap etkinliği." },
-                { id: "etk_namazlar_karisik", title: "NAMAZLAR KARIŞIK BİLME", desc: "Beş vakit namaz, rekat sayıları, farz ve sünnet çeşitleri ile ilgili interaktif soru ve bilgi yarışması." }
-            ],
-            kitap: [
-                { id: "kitap_asansor_30_40", title: "TUHAFLIKLAR ASANSÖRÜ (Sayfa 60-70)", desc: "'Tuhaflıklar Asansörü' kitabının 60-70. sayfalarının dikkatle okunması ve tahlil edilmesi." },
-                { id: "kitap_asansor_40_60", title: "TUHAFLIKLAR ASANSÖRÜ (Sayfa 70-80)", desc: "'Tuhaflıklar Asansörü' kitabının 70-80. sayfalarının okunarak özet çıkarılması." },
-                { id: "kitap_asansor_60_80", title: "TUHAFLIKLAR ASANSÖRÜ (Sayfa 80-90)", desc: "'Tuhaflıklar Asansörü' kitabının 80-90. sayfalarının mütalaa edilmesi." },
-                { id: "kitap_asansor_80_100", title: "TUHAFLIKLAR ASANSÖRÜ (Sayfa 90-100)", desc: "'Tuhaflıklar Asansörü' kitabının 90-100. sayfalarının okunması." },
-                { id: "kitap_asansor_100_son", title: "TUHAFLIKLAR ASANSÖRÜ (Sayfa 100-SON)", desc: "Kitabın sonuna kadar okunarak romanın tahlilinin ve genel değerlendirmesinin tamamlanması." }
-            ],
-            uygulamali: [
-                { id: "uyg_sinav_1", title: "SINAV-1", desc: "4. Kur müfredatı konularınıapsayan 1. Değerlendirme Sınavı." },
-                { id: "uyg_cami_ezan_adabi", title: "CAMİ VE EZAN ADABI", desc: "Camiye giriş-çıkış kuralları, cemaat adabı, ezan okunurken hürmet gösterme ve ibadethane saygısının uygulamalı öğrenimi." }
+                { id: "hik_11", title: "11. TATLI DİL YILANI DELİĞİNDEN ÇIKARIR.", desc: "Gönül alıcı, yumuşak ve tatlı sözlerle en sert tepkiler dahi yumuşatılabilir." },
+                { id: "hik_12", title: "12. BİN DOST AZ, BİR DÜŞMAN ÇOKTUR.", desc: "İyi dostlar edinmek değerlidir; tek bir düşman bile insana rahatsızlık vermeye yeter." },
+                { id: "hik_13", title: "13. SÜTTEN AĞZI YANAN, YOĞURDU ÜFLEYEREK YER.", desc: "Geçmiş acı tecrübelerden ders çıkararak sonraki işlerde temkinli davranmak." }
             ],
             degerler: [
-                { id: "deg_anne_baba", title: "1. ANNE VE BABAYA HÜRMET", desc: "Anne-babaya saygı göstermek, rızalarını kazanmak, üf bile dememek ve dualarını almanın dinimizdeki yeri ve önemi." },
-                { id: "deg_sahabe", title: "2. SAHABE KİMDİR VE GENÇ SAHABELER", desc: "Peygamber Efendimizi görüp iman eden kutlu nesil Sahabeler ve Hz. Ali, Mus'ab b. Umeyr gibi genç sahabelerin örnek hayatları." }
+                { id: "deg_1_4k", title: "1. GIYBET VE SU-İ ZANDAN UZAK DURMAK", desc: "Toplumsal barış ve dostluk için dilimizi gıybet ve su-i zandan koruma bilinci." },
+                { id: "deg_2_4k", title: "2. İFFET VE HAYA EĞİTİMİ", desc: "Bedenini, gözünü ve kalbini edep sınırları içerisinde koruma bilinci." }
+            ],
+            ezberler: [
+                { id: "ezb_asr", title: "ASR SURESİ", desc: "Zamanın ve hüsranın vurgulandığı Asr Suresi'nin tecvid kurallarına göre ezberlenmesi." },
+                { id: "ezb_humeze", title: "HÜMEZE SURESİ", desc: "Dedikodu ve mal hırsını eleştiren Hümeze Suresi'nin mahreçli olarak ezberlenmesi." },
+                { id: "ezb_fil", title: "FİL SURESİ", desc: "Kabe'yi koruyan ilahi kudretin anlatıldığı Fil Suresi'nin ezberlenmesi." },
+                { id: "ezb_kureys", title: "KUREYŞ SURESİ", desc: "Kureyş Suresi'nin tecvidle ezberlenmesi." },
+                { id: "ezb_maun", title: "MAUN SURESİ", desc: "Yetimi itip kakanları uyaran Maun Suresi'nin ezberlenmesi." },
+                { id: "ezb_kevser", title: "KEVSER SURESİ", desc: "Kevser Suresi'nin doğru tecvidle ezberlenmesi." },
+                { id: "ezb_elif_lam_mim", title: "ELİF-LAM-MİM (BAKARA 1-5)", desc: "Bakara Suresi'nin ilk 5 ayetinin tecvid ve mahreçli ezberlenmesi." }
+            ],
+            etkinlik: [
+                { id: "etk_4kur_hadis_esma", title: "4. KUR HADİSLERİNİ VE ESMAÜL HÜSNA'YI SAYMA", desc: "4. Kur hadisleri ile öğrenilen Esmaül Hüsna isimlerinin zihinden eksiksiz tekrarı." },
+                { id: "etk_4kur_kavramlar", title: "4. KUR KAVRAMLARINI TEKRAR ETME", desc: "İşlenen tüm kavramların anlamlarıyla birlikte açıklanarak anlatılması." }
+            ],
+            kitap: [
+                { id: "kitap_zekasi_1_10", title: "OKUMA ZEKASI (S. YAYLAMAZ) 1-10", desc: "S. Yaylamaz'ın 'Okuma Zekası' kitabının 1-10. sayfalarının dikkatle okunması." },
+                { id: "kitap_mutalaasi", title: "KİTAP MÜTALAASI VE OKUMA ETKİNLİĞİ", desc: "Okunan kitabın içeriğinin değerlendirilmesi ve sohbet mütalaası." }
+            ],
+            uygulamali: [
+                { id: "uyg_sinav_adabi", title: "SINAV VE UYGULAMA ADABI", desc: "Sınavlarda dürüstlük, emanet bilinci ve sınav adabı üzerine uygulama." },
+                { id: "uyg_namaz_duaları", title: "NAMAZ DUALARI VE UYGULAMA", desc: "Namaz dualarının ve uygulanışının tatbiki." }
             ]
         };
 
@@ -580,7 +583,7 @@
             };
         }
 
-        // Render Student Cards
+        // Render Student Cards with ranking badges sorted descending by completed tasks
         function renderStudentList() {
             const listContainer = document.getElementById('student-list');
             const emptyMsg = document.getElementById('no-students-message');
@@ -594,7 +597,17 @@
                 emptyMsg.classList.add('hidden');
             }
 
-            students.forEach(student => {
+            // Sort students descending by completed task count, then alphabetically by name
+            const sortedStudents = [...students].sort((a, b) => {
+                const statsA = getStudentStats(a.id);
+                const statsB = getStudentStats(b.id);
+                if (statsB.completed !== statsA.completed) {
+                    return statsB.completed - statsA.completed;
+                }
+                return a.name.localeCompare(b.name, 'tr');
+            });
+
+            sortedStudents.forEach((student, index) => {
                 const stats = getStudentStats(student.id);
                 
                 const cardStyle = stats.isFullyCompleted
@@ -618,9 +631,22 @@
                     levelStyle = 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/50';
                 }
 
+                // Rank badge styling (1st, 2nd, 3rd, and rank numbers)
+                let rankBadge = '';
+                if (index === 0 && stats.completed > 0) {
+                    rankBadge = `<span class="text-[11px] bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shrink-0 border border-amber-200 dark:border-amber-800 shadow-sm" title="1. Sıra"><i class="fa-solid fa-trophy text-amber-500 text-[10px]"></i> 1.</span>`;
+                } else if (index === 1 && stats.completed > 0) {
+                    rankBadge = `<span class="text-[11px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shrink-0 border border-slate-200 dark:border-slate-700 shadow-sm" title="2. Sıra"><i class="fa-solid fa-medal text-slate-400 text-[10px]"></i> 2.</span>`;
+                } else if (index === 2 && stats.completed > 0) {
+                    rankBadge = `<span class="text-[11px] bg-amber-900/10 dark:bg-amber-950/40 text-amber-800 dark:text-amber-400 font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shrink-0 border border-amber-800/20 dark:border-amber-900/40 shadow-sm" title="3. Sıra"><i class="fa-solid fa-award text-amber-700 dark:text-amber-500 text-[10px]"></i> 3.</span>`;
+                } else {
+                    rankBadge = `<span class="text-[10px] text-slate-400 dark:text-slate-500 font-bold px-1.5 py-0.5 rounded bg-slate-50 dark:bg-slate-800/50 shrink-0">#${index + 1}</span>`;
+                }
+
                 const studentCard = `
                     <div class="${cardStyle} border rounded-xl p-3 flex items-center justify-between transition-all cursor-pointer group active:scale-[0.98]" onclick="selectStudent('${student.id}')">
-                        <div class="flex items-center gap-3 min-w-0 flex-1">
+                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                            ${rankBadge}
                             <div class="w-9 h-9 rounded-lg border font-extrabold flex items-center justify-center text-sm transition-colors shrink-0 ${badgeStyle}">
                                 ${student.name.charAt(0).toUpperCase()}
                             </div>
