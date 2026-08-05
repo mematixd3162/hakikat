@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons for Beautiful Visuals -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -23,7 +23,6 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-        /* Custom scrollbar for better styling */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -45,23 +44,22 @@
 </head>
 <body class="bg-sky-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen pb-16 transition-colors duration-300">
 
-    <!-- Confetti Canvas for 100% completion celebration -->
+    <!-- Confetti Canvas -->
     <canvas id="confetti-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-50"></canvas>
 
-    <!-- Floating Theme Toggle Space -->
+    <!-- Floating Theme Toggle -->
     <div class="fixed top-4 right-4 z-50 flex gap-2">
         <button onclick="toggleTheme()" id="theme-toggle-btn" class="w-10 h-10 rounded-xl border border-sky-200 bg-white text-teal-600 dark:border-slate-800 dark:bg-slate-900 dark:text-teal-400 hover:bg-sky-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center shadow-md active:scale-95" aria-label="Tema Değiştir">
             <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
         </button>
     </div>
 
-    <!-- STUDENT SELECTION & CREATION SCREEN -->
+    <!-- STUDENT SELECTION SCREEN -->
     <div id="student-view" class="max-w-md mx-auto px-4 py-12 md:py-20">
         <div class="text-center mb-8">
             <h1 class="text-2xl font-bold tracking-tight text-teal-900 dark:text-teal-400">4. Kur Öğrenci Girişi</h1>
         </div>
 
-        <!-- Add Student Card -->
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-sky-100 dark:border-slate-800 p-5 mb-8 shadow-sm">
             <div class="flex flex-col gap-3">
                 <div class="relative">
@@ -77,23 +75,14 @@
             </div>
         </div>
 
-        <!-- Student List -->
         <div>
-            <div class="flex items-center justify-between mb-3 pl-1">
-                <h2 class="text-xs font-bold text-teal-800 dark:text-teal-400 uppercase tracking-wider">Öğrenciler</h2>
-                <span class="text-[10px] text-teal-600 dark:text-teal-400/70 font-medium bg-teal-50 dark:bg-teal-950/40 px-2.5 py-1 rounded-full border border-teal-100 dark:border-teal-900/50 flex items-center gap-1">
-                    <i class="fa-solid fa-arrow-down-wide-short"></i> Görev Sayısına Göre Sıralı
-                </span>
-            </div>
-            <div id="student-list" class="flex flex-col gap-3">
-                <!-- Students dynamically listed here -->
-            </div>
+            <h2 class="text-xs font-bold text-teal-800 dark:text-teal-400 uppercase tracking-wider mb-3 pl-1">Öğrenciler</h2>
+            <div id="student-list" class="flex flex-col gap-3"></div>
             <div id="no-students-message" class="text-center py-8 text-teal-800/50 dark:text-teal-400/50 hidden text-sm">
                 Kayıtlı öğrenci bulunmuyor.
             </div>
         </div>
 
-        <!-- Backup & Restore Panel -->
         <div class="mt-12 pt-6 border-t border-sky-200/50 dark:border-slate-800/50">
             <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm p-4 rounded-xl border border-sky-200/30 dark:border-slate-800/30">
                 <h3 class="text-xs font-bold text-teal-900 dark:text-teal-400 uppercase tracking-wider mb-2">Veri Yedekleme ve Kurtarma</h3>
@@ -110,9 +99,8 @@
         </div>
     </div>
 
-    <!-- MAIN CURRICULUM TASK TRACKING DASHBOARD (Hidden initially) -->
+    <!-- MAIN DASHBOARD -->
     <div id="dashboard-view" class="hidden">
-        <!-- Header Section -->
         <header class="bg-white dark:bg-slate-900 border-b border-sky-100 dark:border-slate-800 text-slate-800 dark:text-slate-100 transition-colors duration-300">
             <div class="max-w-4xl mx-auto px-4 py-6">
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -132,7 +120,6 @@
                         </div>
                     </div>
                     
-                    <!-- Progress Card -->
                     <div class="bg-slate-50 dark:bg-slate-800/50 border border-sky-100 dark:border-slate-800 p-4 rounded-xl w-full md:w-64 text-center transition-colors duration-300">
                         <div class="flex justify-between items-center mb-1">
                             <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">İlerleme Oranı</span>
@@ -150,16 +137,15 @@
             </div>
         </header>
 
-        <!-- Main Content Area with Categories -->
         <main class="max-w-4xl mx-auto px-4 mt-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                 
-                <!-- Left Column (HADİS, ESMA, KAVRAMLAR, HİKMETLİ SÖZLER, DEĞERLER EĞİTİMİ) -->
+                <!-- Left Column -->
                 <div class="flex flex-col gap-4">
-                    <!-- Category 1: HADİSİ ŞERİFLER -->
+                    <!-- HADİSİ ŞERİFLER -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('hadis')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('hadis')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
                                     <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Hadisi Şerifler</h2>
@@ -175,10 +161,10 @@
                         </div>
                     </div>
 
-                    <!-- Category 2: ESMAÜL HÜSNA -->
+                    <!-- ESMAÜL HÜSNA -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('esma')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('esma')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
                                     <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Esmaül Hüsna</h2>
@@ -194,10 +180,10 @@
                         </div>
                     </div>
 
-                    <!-- Category 3: KAVRAMLAR -->
+                    <!-- KAVRAMLAR -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('kavramlar')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('kavramlar')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
                                     <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Kavramlar</h2>
@@ -213,10 +199,10 @@
                         </div>
                     </div>
 
-                    <!-- Category 4: HİKMETLİ SÖZLER -->
+                    <!-- HİKMETLİ SÖZLER -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('hikmet')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('hikmet')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
                                     <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Hikmetli Sözler</h2>
@@ -232,10 +218,10 @@
                         </div>
                     </div>
 
-                    <!-- Category 5: DEĞERLER EĞİTİMİ -->
+                    <!-- DEĞERLER EĞİTİMİ -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('degerler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('degerler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
                                     <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Değerler Eğitimi</h2>
@@ -252,15 +238,15 @@
                     </div>
                 </div>
 
-                <!-- Right Column (EZBERLER, ETKİNLİK, KİTAP, UYGULAMALI / SINAV ADAB) -->
+                <!-- Right Column -->
                 <div class="flex flex-col gap-4">
-                    <!-- Category 6: 4. KUR EZBERLERİ -->
+                    <!-- 1. KUR EZBERLERİ -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('ezberler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('ezberler')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
-                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">4. Kur Ezberleri</h2>
+                                    <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">1. Kur Ezberleri</h2>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <span class="bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 text-[10px] px-2 py-0.5 rounded-md font-bold" id="progress-ezberler">0%</span>
@@ -273,10 +259,10 @@
                         </div>
                     </div>
 
-                    <!-- Category 7: ETKİNLİK -->
+                    <!-- ETKİNLİK -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('etkinlik')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('etkinlik')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
                                     <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Etkinlik</h2>
@@ -292,10 +278,10 @@
                         </div>
                     </div>
 
-                    <!-- Category 8: KİTAP OKUMA -->
+                    <!-- KİTAP OKUMA -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('kitap')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('kitap')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
                                     <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Kitap Okuma</h2>
@@ -311,10 +297,10 @@
                         </div>
                     </div>
 
-                    <!-- Category 9: UYGULAMALI / SINAV VE ADAB -->
+                    <!-- UYGULAMALI / SINAV VEYA ADAB -->
                     <div class="bg-white dark:bg-slate-900 rounded-xl border border-sky-100 dark:border-slate-800 overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div onclick="toggleCategory('uygulamali')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none active:scale-[0.99] transition-transform duration-100">
+                            <div onclick="toggleCategory('uygulamali')" class="hover:bg-slate-50 dark:hover:bg-slate-800/50 p-4 border-b border-sky-100 dark:border-slate-800 flex justify-between items-center cursor-pointer select-none">
                                 <div class="flex items-center gap-3">
                                     <div class="w-2.5 h-2.5 rounded-full bg-teal-500"></div>
                                     <h2 class="font-bold text-slate-700 dark:text-slate-200 text-sm">Sınav ve Uygulama Adabı</h2>
@@ -336,21 +322,21 @@
         </main>
     </div>
 
-    <!-- SUCCESS BANNER OVERLAY -->
+    <!-- SUCCESS BANNER -->
     <div id="success-banner" class="fixed inset-0 bg-slate-950/40 dark:bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-white dark:bg-slate-900 rounded-2xl p-8 max-w-sm w-full text-center border border-teal-100 dark:border-slate-800 shadow-xl transform scale-95 transition-transform duration-300">
             <div class="w-16 h-16 bg-teal-50 dark:bg-teal-950/50 text-teal-600 dark:text-teal-400 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
                 <i class="fa-solid fa-circle-check"></i>
             </div>
-            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">Başarı ile bitirdiniz</h3>
-            <p class="text-slate-500 dark:text-slate-400 text-xs mb-6">4. Kur kapsamındaki tüm görev ve müfredat çalışmalarını başarıyla tamamladınız.</p>
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">Tebrikler!</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-xs mb-6">4. Kur müfredatındaki tüm görevleri başarıyla tamamladınız.</p>
             <button onclick="closeSuccessBanner()" class="w-full bg-teal-600 hover:bg-teal-500 dark:bg-teal-700 dark:hover:bg-teal-600 text-white font-semibold py-2.5 rounded-xl transition-all shadow-sm active:scale-95 text-xs">
                 Tamam
             </button>
         </div>
     </div>
 
-    <!-- CUSTOM CONFIRM MODAL -->
+    <!-- CONFIRM MODAL -->
     <div id="confirm-modal" class="fixed inset-0 bg-slate-950/40 dark:bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-white dark:bg-slate-900 rounded-xl p-6 max-w-xs w-full text-center border border-sky-100 dark:border-slate-800 transform scale-95 transition-transform duration-300">
             <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-2" id="confirm-title">Onay</h3>
@@ -366,7 +352,7 @@
         </div>
     </div>
 
-    <!-- DATA TRANSFER MODAL (Backup/Restore) -->
+    <!-- DATA TRANSFER MODAL -->
     <div id="transfer-modal" class="fixed inset-0 bg-slate-950/40 dark:bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
         <div class="bg-white dark:bg-slate-900 rounded-xl p-6 max-w-sm w-full border border-sky-100 dark:border-slate-800 transform scale-95 transition-transform duration-300">
             <h3 class="text-sm font-bold text-teal-900 dark:text-teal-400 mb-2" id="transfer-modal-title">Yedek Yükle</h3>
@@ -383,92 +369,84 @@
         </div>
     </div>
 
-    <!-- Javascript Logic -->
+    <!-- JS Logic -->
     <script>
-        // Curriculum Database for 4. Kur
+        // Görseldeki 4. Kur Müfredatı
         const curriculumData = {
             hadis: [
-                { id: "hadis_16", title: "16. HER YAPILAN İYİLİK SADAKADIR.", desc: "İslam'da sadaka sadece maddi yardım değildir. İnsanlara tebessüm etmek, güzel söz söylemek, yol göstermek ve faydalı her iş bir sadakadır." },
-                { id: "hadis_17", title: "17. ZİKRİN EN FAZİLETLİSİ LA İLAHEİLLALLAHTIR.", desc: "Mahlukata ve insanlara merhametle yaklaşmak Allah'ın merhametine erişmenin temel şartıdır." },
-                { id: "hadis_18", title: "18. ZARAR VERMEK, ZARARA ZARARLA KARŞILIK VERMEK YOKTUR.", desc: "Dua, müminin karşılaştığı zorluklarda ve sıkıntılarda sığınabileceği en güçlü manevi destektir." },
-                { id: "hadis_19", title: "19. HİÇ BİRİNİZ KENDİSİ İÇİN İSTEDİĞİNİ MÜMİN KARDEŞİ İÇİNDE İSTEMEDİKÇE GERÇEK İMAN ETMİŞ OLMAZ.", desc: "Zamanı, sağlığı, malı ve imkanları gereksiz yere harcamak israftır ve dinimizde men edilmiştir." },
-                { id: "hadis_20", title: "20. İŞÇİYE ÜCRETİNİ TERİ ALNININ TERİ KURUMADAN VERİNİZ.", desc: "Hem beden hem kalp hem de çevre temizliği müminin imanı ve ibadet hayatı için temel bir dayanaktır." }
+                { id: "hadis_16", title: "16. HER YAPILAN İYİLİK SADAKADIR.", desc: "İslam'da sadaka sadece maddi yardım değildir. İnsanlara tebessüm etmek, güzel söz söylemek ve hayırlı işler yapmak da sadakadır." },
+                { id: "hadis_17", title: "17. ZİKRİN EN FAZİLETLİSİ LA İLAHEİLLALLAHTIR.", desc: "Tevhit kelimesi olan 'Lâ ilâhe illallâh', zikirlerin en üstünüdür. Kalbi temizleyen ve insanı Allah'a yaklaştıran en kıymetli kelimedir." },
+                { id: "hadis_18", title: "18. ZARAR VERMEK, ZARARA ZARARLA KARŞILIK VERMEK YOKTUR.", desc: "İslam dininde ne başkasına zarar vermek ne de görülen bir zarara aynı şekilde haksızlıkla karşılık vermek caizdir." },
+                { id: "hadis_19", title: "19. HİÇ BİRİNİZ KENDİSİ İÇİN İSTEDİĞİNİ MÜMİN KARDEŞİ İÇİN DE İSTEMEDİKÇE GERÇEK İMAN ETMİŞ OLMAZ.", desc: "Müminler birbirlerinin iyiliğini ve mutluluğunu kendi nefsi gibi istemelidir." },
+                { id: "hadis_20", title: "20. İŞÇİYE ÜCRETİNİ TERİ ALNININ TERİ KURUMADAN VERİNİZ.", desc: "Kul hakkına ve insan emeğine verilen değerin göstergesidir. Çalışanın hakkı zamanında ödenmelidir." }
             ],
             esma: [
-                { id: "esma_el_mumin", title: "10- EL MELİK: HERŞEYİN SAHİBİ  OLAN ALLAH.", desc: "Güven veren, emniyete kavuşturan, müminleri koruyan ve vaadine sadık olan Yüce Allah." },
-                { id: "esma_el_muheymin", title: "11- EL- ALİM : HERŞEYİ BİLEN ALLAH.", desc: "Gözeten, koruyan, her şeyi hükmü altına alan ve denetleyen." },
-                { id: "esma_el_aziz", title: " 12- EL- GAFUR: ÇOKÇA AFFEDEN ALLAH.", desc: "İzzet sahibi, mutlak galip gelen, mağlup edilmesi imkansız olan." },
+                { id: "esma_10", title: "10- EL-MELİK: HERŞEYİN SAHİBİ OLAN ALLAH.", desc: "Mülkün, göklerin, yerin ve bütün kainatın tek mutlak sahibi." },
+                { id: "esma_11", title: "11- EL-ALİM: HERŞEYİ BİLEN ALLAH.", desc: "Olmuş ve olacak, gizli ve açık her şeyi eksiksiz ve ezeli ilmiyle bilen." },
+                { id: "esma_12", title: "12- EL-GAFUR: ÇOKÇA AFFEDEN ALLAH.", desc: "Kullarının günahlarını örten, bağışlaması ve merhameti sonsuz olan." }
             ],
             kavramlar: [
-                { id: "kav_13", title: "13. İSTİŞARE: DANIŞMAK, FİKİR ALIŞ VERİŞİNDE BULUNMAK DEMEKTİR.", desc: "İnsanlar hakkında ön yargısız olmak, iyi niyetli ve olumlu düşünmektir." },
-                { id: "kav_14", title: "14. HİLM: YUMUŞAK HUYLULUK DEMEKTİR.", desc: "Başkaları hakkında delilsiz ve yersiz yere kötü düşünmek, şüpheyle bakmaktır." },
-                { id: "kav_15", title: "15. HIFZI LİSAN: DİLİ GEREKSİZ ŞEYLERDEN KORUMAK  DEMEKTİR.", desc: "Kişinin arkasından, duyduğunda üzüleceği doğru hususları bile konuşmaktır." },
-                { id: "kav_16", title: "16. İFFET :  NAMUSLU,ŞEREFLİ  VE AHLAKLI OLMAK DEMEKTİR.", desc: "Bir insana yapmadığı çirkin bir davranışı veya suçu yalan olarak isnad etmektir." }
+                { id: "kav_13", title: "13. İSTİŞARE: DANIŞMAK, FİKİR ALIŞ VERİŞİNDE BULUNMAK DEMEKTİR.", desc: "Önemli kararlar alırken bilgili ve güvenilir kişilerin görüşlerine başvurmak." },
+                { id: "kav_14", title: "14. HİLM: YUMUŞAK HUYLULUK DEMEKTİR.", desc: "Öfkeyi kontrol etmek, insanlara karşı nazik, anlayışlı ve sabırlı davranmaktır." },
+                { id: "kav_15", title: "15. HIFZI LİSAN: DİLİ GEREKSİZ ŞEYLERDEN KORUMAK DEMEKTİR.", desc: "Dili yalan, gıybet ve kötü sözden koruyarak ya hayır konuşmak ya da susmaktır." },
+                { id: "kav_16", title: "16. İFFET: NAMUSLU, ŞEREFLİ VE AHLAKLI OLMAK DEMEKTİR.", desc: "Nefsi haramlardan ve çirkin davranışlardan koruyup şerefli yaşamaktır." }
             ],
             hikmet: [
-                { id: "hik_11", title: "11. TATLI DİL YILANI DELİĞİNDEN ÇIKARIR.", desc: "Gönül alıcı, yumuşak ve tatlı sözlerle en sert tepkiler dahi yumuşatılabilir." },
-                { id: "hik_12", title: "12. BİN DOST AZ, BİR DÜŞMAN ÇOKTUR.", desc: "İyi dostlar edinmek değerlidir; tek bir düşman bile insana rahatsızlık vermeye yeter." },
-                { id: "hik_13", title: "13. SÜTTEN AĞZI YANAN, YOĞURDU ÜFLEYEREK YER.", desc: "Geçmiş acı tecrübelerden ders çıkararak sonraki işlerde temkinli davranmak." }
-            ],
-            degerler: [
-                { id: "deg_1_4k", title: "1. GIYBET VE SU-İ ZANDAN UZAK DURMAK", desc: "Toplumsal barış ve dostluk için dilimizi gıybet ve su-i zandan koruma bilinci." },
-                { id: "deg_2_4k", title: "2. İFFET VE HAYA EĞİTİMİ", desc: "Bedenini, gözünü ve kalbini edep sınırları içerisinde koruma bilinci." }
+                { id: "hik_10", title: "10. ASLAN YATTIĞI YERDEN BELLİ OLUR.", desc: "İnsanın tertibi, düzeni ve kişiliği yaşadığı veya çalıştığı ortamın intizamından anlaşılır." },
+                { id: "hik_11", title: "11. DANIŞAN DAĞLAR AŞAR, DANIŞMAYAN YOLDA ŞAŞAR.", desc: "İstişare eden ve tecrübelerden faydalanan insan engelleri aşar; danışmayan ise hataya düşer." },
+                { id: "hik_12", title: "12. GÜLME KOMŞUNA GELİR BAŞINA.", desc: "Başkalarının yaşadığı sıkıntı veya olumsuzluklarla alay edilmemelidir." },
+                { id: "hik_13", title: "13. YAZIN BAŞI PİŞENİN KIŞIN AŞI PİŞER.", desc: "Zamanında emek verip çalışan kimseler gelecekte bunun rahatlığını ve bereketini görür." }
             ],
             ezberler: [
-                { id: "ezb_asr", title: "ASR SURESİ", desc: "Zamanın ve hüsranın vurgulandığı Asr Suresi'nin tecvid kurallarına göre ezberlenmesi." },
-                { id: "ezb_humeze", title: "HÜMEZE SURESİ", desc: "Dedikodu ve mal hırsını eleştiren Hümeze Suresi'nin mahreçli olarak ezberlenmesi." },
-                { id: "ezb_fil", title: "FİL SURESİ", desc: "Kabe'yi koruyan ilahi kudretin anlatıldığı Fil Suresi'nin ezberlenmesi." },
-                { id: "ezb_kureys", title: "KUREYŞ SURESİ", desc: "Kureyş Suresi'nin tecvidle ezberlenmesi." },
-                { id: "ezb_maun", title: "MAUN SURESİ", desc: "Yetimi itip kakanları uyaran Maun Suresi'nin ezberlenmesi." },
-                { id: "ezb_kevser", title: "KEVSER SURESİ", desc: "Kevser Suresi'nin doğru tecvidle ezberlenmesi." },
-                { id: "ezb_elif_lam_mim", title: "ELİF-LAM-MİM (BAKARA 1-5)", desc: "Bakara Suresi'nin ilk 5 ayetinin tecvid ve mahreçli ezberlenmesi." }
+                { id: "ezb_elif_lam_mim", title: "ELİF LAM MİM", desc: "Bakara Suresi ilk ayetlerinin tecvid kurallarına uygun ve akıcı ezberlenmesi." },
+                { id: "ezb_kadir", title: "KADİR SURESİ", desc: "Kadir Suresinin tecvidli ezberi ve meali." },
+                { id: "ezb_salaten_tuncina", title: "SALATEN TÜNCİNA", desc: "Salât-ı Münciye duasının doğru ezberlenmesi." },
+                { id: "ezb_caminin_bolumleri", title: "CAMİNİN BÖLÜMLERİ", desc: "Mihrap, minber, kürsü, minare vb. caminin temel yapılarının öğrenilmesi." },
+                { id: "ezb_elif_okutucusu", title: "ELİF OKUTUCUSU VE ÖRNEKLERİ", desc: "Elifba/Osmanlıca öğretiminde Elif uzatma okutucusunun kuralı ve kelime örnekleri." },
+                { id: "ezb_he_okutucusu", title: "HE OKUTUCUSU VE ÖRNEKLERİ", desc: "Elifba/Osmanlıca öğretiminde He okutucusu ve kelime alıştırmaları." },
+                { id: "ezb_namazi_bozanlar", title: "NAMAZI BOZAN DURUMLAR", desc: "Namazı geçersiz kılan durumlar (konuşmak, abdestin bozulması vb.)." }
             ],
             etkinlik: [
-                { id: "etk_4kur_hadis_esma", title: "4. KUR HADİSLERİNİ VE ESMAÜL HÜSNA'YI SAYMA", desc: "4. Kur hadisleri ile öğrenilen Esmaül Hüsna isimlerinin zihinden eksiksiz tekrarı." },
-                { id: "etk_4kur_kavramlar", title: "4. KUR KAVRAMLARINI TEKRAR ETME", desc: "İşlenen tüm kavramların anlamlarıyla birlikte açıklanarak anlatılması." }
+                { id: "etk_hadis_kavram", title: "KARIŞIK HADİS VE KAVRAMLAR", desc: "Hadis-i Şerifler ve Kavramlar konularını pekiştirici karma soru-cevap etkinliği." },
+                { id: "etk_namazlar_karisik", title: "NAMAZLAR KARIŞIK BİLME", desc: "Namaz ibadeti ve detaylarıyla ilgili interaktif bilgi yarışması." }
             ],
             kitap: [
-                { id: "kitap_zekasi_1_10", title: "OKUMA ZEKASI (S. YAYLAMAZ) 1-10", desc: "S. Yaylamaz'ın 'Okuma Zekası' kitabının 1-10. sayfalarının dikkatle okunması." },
-                { id: "kitap_mutalaasi", title: "KİTAP MÜTALAASI VE OKUMA ETKİNLİĞİ", desc: "Okunan kitabın içeriğinin değerlendirilmesi ve sohbet mütalaası." }
+                { id: "kitap_asansor_30_40", title: "TUHAFLIKLAR ASANSÖRÜ 30-40", desc: "'Tuhaflıklar Asansörü' kitabının 30-40. sayfalarının okunması." },
+                { id: "kitap_asansor_40_60", title: "TUHAFLIKLAR ASANSÖRÜ 40-60", desc: "'Tuhaflıklar Asansörü' kitabının 40-60. sayfalarının okunması." },
+                { id: "kitap_asansor_60_80", title: "TUHAFLIKLAR ASANSÖRÜ 60-80", desc: "'Tuhaflıklar Asansörü' kitabının 60-80. sayfalarının okunması." },
+                { id: "kitap_asansor_80_100", title: "TUHAFLIKLAR ASANSÖRÜ 80-100", desc: "'Tuhaflıklar Asansörü' kitabının 80-100. sayfalarının okunması." },
+                { id: "kitap_asansor_100_son", title: "TUHAFLIKLAR ASANSÖRÜ 100-SON", desc: "Kitabın sonuna kadar okunarak genel tahlilin tamamlanması." }
             ],
             uygulamali: [
-                { id: "uyg_sinav_adabi", title: "SINAV VE UYGULAMA ADABI", desc: "Sınavlarda dürüstlük, emanet bilinci ve sınav adabı üzerine uygulama." },
-                { id: "uyg_namaz_duaları", title: "NAMAZ DUALARI VE UYGULAMA", desc: "Namaz dualarının ve uygulanışının tatbiki." }
+                { id: "uyg_sinav_1", title: "SINAV-1", desc: "4. Kur müfredat konularını kapsayan değerlendirme sınavı." },
+                { id: "uyg_cami_ezan_adabi", title: "CAMİ VE EZAN ADABI", desc: "Cami adabı, cemaat bilinci ve ezan hürmetinin uygulamalı öğretimi." }
+            ],
+            degerler: [
+                { id: "deg_anne_baba", title: "1. ANNE VE BABAYA HÜRMET", desc: "Anne-babaya saygı göstermek ve dualarını almanın önemi." },
+                { id: "deg_sahabe", title: "2. SAHABE KİMDİR VE GENÇ SAHABELER", desc: "Peygamber Efendimizin izinden giden kutlu nesil ve genç sahabelerin örnek hayatları." }
             ]
         };
 
-        // LocalStorage Keys configured for 4. Kur
         const STORAGE_STUDENTS_LIST = "4_kur_students_list_v1";
         const STORAGE_ACTIVE_ID = "4_kur_active_student_id_v1";
         const STORAGE_PROGRESS_DATA = "4_kur_students_progress_v1";
         const STORAGE_THEME = "4_kur_theme_v1";
 
-        // Load states from LocalStorage
         let students = JSON.parse(localStorage.getItem(STORAGE_STUDENTS_LIST)) || [];
         let activeStudentId = localStorage.getItem(STORAGE_ACTIVE_ID) || "";
         let progressMap = JSON.parse(localStorage.getItem(STORAGE_PROGRESS_DATA)) || {};
         let activeTheme = localStorage.getItem(STORAGE_THEME) || "light";
 
-        // Category Collapse States (Always starts collapsed)
         let collapsedCategories = {
-            hadis: true,
-            esma: true,
-            kavramlar: true,
-            hikmet: true,
-            degerler: true,
-            ezberler: true,
-            etkinlik: true,
-            kitap: true,
-            uygulamali: true
+            hadis: true, esma: true, kavramlar: true, hikmet: true, 
+            degerler: true, ezberler: true, etkinlik: true, kitap: true, uygulamali: true
         };
 
-        // Window load router
         window.onload = function() {
             initTheme();
             initApp();
         };
 
-        // Theme functions
         function initTheme() {
             applyTheme(activeTheme);
         }
@@ -484,14 +462,10 @@
             const icon = document.getElementById("theme-icon");
             if (theme === "dark") {
                 root.classList.add("dark");
-                if (icon) {
-                    icon.className = "fa-solid fa-sun text-sm text-slate-300";
-                }
+                if (icon) icon.className = "fa-solid fa-sun text-sm text-slate-300";
             } else {
                 root.classList.remove("dark");
-                if (icon) {
-                    icon.className = "fa-solid fa-moon text-sm text-teal-600";
-                }
+                if (icon) icon.className = "fa-solid fa-moon text-sm text-teal-600";
             }
         }
 
@@ -503,7 +477,6 @@
             }
         }
 
-        // Show Student Selection View
         function showStudentSelection() {
             document.getElementById('student-view').classList.remove('hidden');
             document.getElementById('dashboard-view').classList.add('hidden');
@@ -511,7 +484,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Show Dashboard View
         function showDashboard() {
             document.getElementById('student-view').classList.add('hidden');
             document.getElementById('dashboard-view').classList.remove('hidden');
@@ -538,7 +510,6 @@
             showStudentSelection();
         }
 
-        // Create new student
         function createNewStudent() {
             const nameInput = document.getElementById('new-student-name');
             const name = nameInput.value.trim();
@@ -558,7 +529,6 @@
             renderStudentList();
         }
 
-        // Helper to get stats for a student
         function getStudentStats(studentId) {
             const studentProgress = progressMap[studentId] || {};
             let total = 0;
@@ -567,9 +537,7 @@
             Object.keys(curriculumData).forEach(cat => {
                 curriculumData[cat].forEach(task => {
                     total++;
-                    if (studentProgress[task.id] === true) {
-                        completed++;
-                    }
+                    if (studentProgress[task.id] === true) completed++;
                 });
             });
 
@@ -581,7 +549,6 @@
             };
         }
 
-        // Render Student Cards with ranking badges sorted descending by completed tasks
         function renderStudentList() {
             const listContainer = document.getElementById('student-list');
             const emptyMsg = document.getElementById('no-students-message');
@@ -595,17 +562,7 @@
                 emptyMsg.classList.add('hidden');
             }
 
-            // Sort students descending by completed task count, then alphabetically by name
-            const sortedStudents = [...students].sort((a, b) => {
-                const statsA = getStudentStats(a.id);
-                const statsB = getStudentStats(b.id);
-                if (statsB.completed !== statsA.completed) {
-                    return statsB.completed - statsA.completed;
-                }
-                return a.name.localeCompare(b.name, 'tr');
-            });
-
-            sortedStudents.forEach((student, index) => {
+            students.forEach(student => {
                 const stats = getStudentStats(student.id);
                 
                 const cardStyle = stats.isFullyCompleted
@@ -629,22 +586,9 @@
                     levelStyle = 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/50';
                 }
 
-                // Rank badge styling (1st, 2nd, 3rd, and rank numbers)
-                let rankBadge = '';
-                if (index === 0 && stats.completed > 0) {
-                    rankBadge = `<span class="text-[11px] bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shrink-0 border border-amber-200 dark:border-amber-800 shadow-sm" title="1. Sıra"><i class="fa-solid fa-trophy text-amber-500 text-[10px]"></i> 1.</span>`;
-                } else if (index === 1 && stats.completed > 0) {
-                    rankBadge = `<span class="text-[11px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shrink-0 border border-slate-200 dark:border-slate-700 shadow-sm" title="2. Sıra"><i class="fa-solid fa-medal text-slate-400 text-[10px]"></i> 2.</span>`;
-                } else if (index === 2 && stats.completed > 0) {
-                    rankBadge = `<span class="text-[11px] bg-amber-900/10 dark:bg-amber-950/40 text-amber-800 dark:text-amber-400 font-bold px-2 py-0.5 rounded-md flex items-center gap-1 shrink-0 border border-amber-800/20 dark:border-amber-900/40 shadow-sm" title="3. Sıra"><i class="fa-solid fa-award text-amber-700 dark:text-amber-500 text-[10px]"></i> 3.</span>`;
-                } else {
-                    rankBadge = `<span class="text-[10px] text-slate-400 dark:text-slate-500 font-bold px-1.5 py-0.5 rounded bg-slate-50 dark:bg-slate-800/50 shrink-0">#${index + 1}</span>`;
-                }
-
                 const studentCard = `
                     <div class="${cardStyle} border rounded-xl p-3 flex items-center justify-between transition-all cursor-pointer group active:scale-[0.98]" onclick="selectStudent('${student.id}')">
-                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                            ${rankBadge}
+                        <div class="flex items-center gap-3 min-w-0 flex-1">
                             <div class="w-9 h-9 rounded-lg border font-extrabold flex items-center justify-center text-sm transition-colors shrink-0 ${badgeStyle}">
                                 ${student.name.charAt(0).toUpperCase()}
                             </div>
@@ -709,16 +653,11 @@
                 collapsedCategories[cat] = true;
                 const container = document.getElementById(`container-${cat}`);
                 const chevron = document.getElementById(`chevron-${cat}`);
-                if (container) {
-                    container.classList.add('hidden');
-                }
-                if (chevron) {
-                    chevron.className = "fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300 rotate-0";
-                }
+                if (container) container.classList.add('hidden');
+                if (chevron) chevron.className = "fa-solid fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] transition-transform duration-300 rotate-0";
             });
         }
 
-        // Render Curriculum
         function renderCurriculum() {
             const categories = Object.keys(curriculumData);
             const activeStudentProgress = progressMap[activeStudentId] || {};
@@ -827,7 +766,6 @@
             }
         }
 
-        // Calculate progress percentage and trigger celebration at 100%
         function calculateProgress() {
             if (!activeStudentId) return;
 
@@ -884,7 +822,6 @@
             }
         }
 
-        // CONFETTI CELEBRATION EFFECT
         function triggerClassyCelebration() {
             const banner = document.getElementById('success-banner');
             if (banner) {
@@ -973,7 +910,6 @@
             });
         }
 
-        // Backup (Export) Function
         function exportData() {
             const dataToExport = {
                 students: students,
@@ -988,10 +924,9 @@
             document.execCommand("copy");
             document.body.removeChild(dummy);
 
-            showConfirmModal("Yedek Kopyalandı", "Tüm öğrenci ve görev verileriniz güvenli bir kod olarak panoya kopyalandı! Bu kodu saklayarak dilediğiniz zaman yükleyebilirsiniz.", null, true);
+            showConfirmModal("Yedek Kopyalandı", "Tüm öğrenci ve görev verileriniz güvenli bir kod olarak panoya kopyalandı!", null, true);
         }
 
-        // Import (Restore) Functions
         function openImportModal() {
             document.getElementById('transfer-text-area').value = "";
             document.getElementById('transfer-modal').classList.remove('hidden');
@@ -1015,14 +950,14 @@
 
                         closeTransferModal();
                         renderStudentList();
-                        showConfirmModal("Yükleme Başarılı", "Tüm yedek verileriniz başarıyla tarayıcıya aktarıldı.", function() {
+                        showConfirmModal("Yükleme Başarılı", "Tüm yedek verileriniz başarıyla aktarıldı.", function() {
                             initApp();
                         }, true);
                     } else {
-                        showConfirmModal("Hata", "Geçersiz yedekleme kodu girdiniz. Lütfen kodu kontrol edin.", null, true);
+                        showConfirmModal("Hata", "Geçersiz yedekleme kodu girdiniz.", null, true);
                     }
                 } catch(e) {
-                    showConfirmModal("Hata", "Yedekleme kodu çözümlenemedi. Eksik veya bozuk yapıştırmış olabilirsiniz.", null, true);
+                    showConfirmModal("Hata", "Yedekleme kodu çözümlenemedi.", null, true);
                 }
             };
         }
@@ -1061,9 +996,7 @@
         }
 
         document.getElementById('confirm-yes-btn').addEventListener('click', () => {
-            if (confirmCallback) {
-                confirmCallback();
-            }
+            if (confirmCallback) confirmCallback();
             closeConfirmModal();
         });
     </script>
